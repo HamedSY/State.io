@@ -12,17 +12,23 @@ typedef struct City {
 	int x2;
 	int y1;
 	int y2;
+	int theta;
+	int flag;
 } City;
 
 const int SCREEN_WIDTH = 1100;
 const int SCREEN_HEIGHT = 600;
 const int FPS = 60;
+int mei , mej , enemyi , enemyj;
 City cities[4][6];
+City myCity;
+City enemyCity;
 
 // funcs prototypes
 int checkExit();
-void rectMapGenerator( SDL_Renderer* rend );
-void print2DCity(int a , int b , City arr[a][b]);
+int initializingCities();
+void print2DCity( int a , int b , City arr[a][b] );
+void printMap( SDL_Renderer* rend , int n );
 
 
 int main() {
@@ -34,17 +40,20 @@ int main() {
 		return 0;
 	}
 
-	printf("Hello World!\n\n");
+	//printf("Hello World!\n\n");
 
 	SDL_Window *myWindow = SDL_CreateWindow( "My Window" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 
 	SCREEN_WIDTH , SCREEN_HEIGHT , SDL_WINDOW_OPENGL );
 
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
-	SDL_Surface* mySurface = IMG_Load("images/back.png");
+	SDL_Surface* mySurface = IMG_Load("images/back.jpg");
 	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(myRenderer , mySurface);
 
+	// SDL_Rect a;
+	// a.x / a.y / a.h / a.w
 	
+	int n = initializingCities();	
 
 	while( !checkExit() ) {
 		
@@ -53,19 +62,18 @@ int main() {
 
 		SDL_RenderCopy( myRenderer , myTexture , NULL , NULL );
 
-		rectMapGenerator( myRenderer );
-
-		print2DCity(4 , 6 , cities);
+		printMap( myRenderer , n );
 		
 		SDL_RenderPresent( myRenderer );
-		SDL_Delay( 3000 );
+		SDL_Delay( 1000 / FPS );
+		SDL_RenderClear( myRenderer );
 		
 	}
 
 	
 	SDL_DestroyWindow( myWindow );
 	SDL_DestroyRenderer( myRenderer );
-    //SDL_DestroyTexture(myTexture);
+    SDL_DestroyTexture( myTexture );
 	SDL_Quit();
 	
     return 0;
@@ -102,7 +110,7 @@ void print2DCity(int a , int b , City arr[a][b]) {
 	}
 }
 
-void rectMapGenerator( SDL_Renderer* rend ) {
+int initializingCities() {
 	int length[6] = {0} , width[4][6] = {0} , theta , n = 4 + (rand() % 3);
 	int color = 0xff000000;
 	
@@ -112,14 +120,12 @@ void rectMapGenerator( SDL_Renderer* rend ) {
 		else cities[i][0].y1 = (rand() % 30) + 40;
 
 		for(int j = 0; j < n; j++) {
+			theta = (rand() % 20) + 10;
 			if(i == 0) length[j] = (rand() % 70) + 200 - (n * 20);
 			width[i][j] = (rand() % 50) + 50;
-			theta = (rand() % 20) + 10;
 			cities[i][j].x2 = cities[i][j].x1 + length[j];
 			cities[i][j].y2 = cities[i][j].y1 + width[i][j];
-
-			roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , theta ,
-			(rand() % 156) , (rand() % 156) , (rand() % 156) , 255 );
+			cities[i][j].theta = theta;
 
 			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 30;
 			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 30;
@@ -128,4 +134,44 @@ void rectMapGenerator( SDL_Renderer* rend ) {
 		}
 	}
 
+	mei = rand() % 4;
+	mej = rand() % n;
+	do {
+		enemyi = rand() % 4;
+		enemyj = rand() % n;
+	} while( (enemyi == mei && enemyj == mej) );
+
+	myCity = cities[mei][mej];
+	enemyCity = cities[enemyi][enemyj];
+
+	return n;
+}
+
+void printMap( SDL_Renderer* rend , int n ) {
+	int theta;
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < n; j++) {
+			
+			if( i == mei && j == mej ) {
+				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
+				200 , 10 , 10 , 255 );
+				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
+				10 , 150 , 10 , 10 , 255 );				
+			}
+
+			else if( i == enemyi && j == enemyj ) {
+				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
+				10 , 200 , 10 , 255 );
+				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
+				10 , 10 , 150 , 10 , 255 );
+			}
+
+			else {
+				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
+				170 , 200 , 180 , 255 );
+				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
+				10 , 150 , 160 , 180 , 255 );
+			}
+		}
+	}
 }
