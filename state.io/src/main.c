@@ -16,19 +16,34 @@ typedef struct City {
 	int flag;
 } City;
 
+typedef struct Coordination {
+	double x;
+	double y;
+} Coordination;
+
 const int SCREEN_WIDTH = 1100;
 const int SCREEN_HEIGHT = 600;
 const int FPS = 60;
+const int CENTER_R = 15;
+
 int mei , mej , enemyi , enemyj;
+int mouseOnMe = 0 , isSendingSoldiers = 0;
+int n;
+
 City cities[4][6];
 City myCity;
 City enemyCity;
 
+Coordination begin , dest;
+Coordination mouse , soldier;
+Coordination tmp = {0};
+
 // funcs prototypes
-int checkExit();
+int eventHandling( SDL_Renderer *rend );
 int initializingCities();
 void print2DCity( int a , int b , City arr[a][b] );
 void printMap( SDL_Renderer* rend , int n );
+void sendingSoldiers( SDL_Renderer *rend );
 
 
 int main() {
@@ -39,30 +54,42 @@ int main() {
 		printf("error : %s\n" , SDL_GetError());
 		return 0;
 	}
-
-	//printf("Hello World!\n\n");
-
+	// window , renderer , surface , texture , event
 	SDL_Window *myWindow = SDL_CreateWindow( "My Window" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 
 	SCREEN_WIDTH , SCREEN_HEIGHT , SDL_WINDOW_OPENGL );
-
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-
-	SDL_Surface* mySurface = IMG_Load("images/back.jpg");
-	SDL_Texture* myTexture = SDL_CreateTextureFromSurface(myRenderer , mySurface);
+	SDL_Surface *mySurface = IMG_Load("images/back.jpg");
+	SDL_Texture *myTexture = SDL_CreateTextureFromSurface(myRenderer , mySurface);
+	SDL_Event *myEvent;
 
 	// SDL_Rect a;
 	// a.x / a.y / a.h / a.w
 	
-	int n = initializingCities();	
+	n = initializingCities();
+	//print2DCity( 4 , 6 , cities );
+	//printf("center of my city is: ( %d , %d )\n" , (myCity.x1 + myCity.x2) / 2 , (myCity.y1 + myCity.y2) / 2 );
 
-	while( !checkExit() ) {
+	// game loop
+	while( 1 ) {
 		
 		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
-		SDL_RenderClear( myRenderer ); //clear the window and blacken it
+		SDL_RenderClear( myRenderer );
 
 		SDL_RenderCopy( myRenderer , myTexture , NULL , NULL );
 
 		printMap( myRenderer , n );
+
+		// event handling
+		if( !eventHandling( myRenderer ) )
+			break;
+		if ( mouseOnMe ) {
+			lineColor( myRenderer , (myCity.x1 + myCity.x2) / 2 , (myCity.y1 + myCity.y2) / 2
+			, mouse.x , mouse.y , 0xff000000 );
+		}
+
+		if( isSendingSoldiers ) {
+			sendingSoldiers( myRenderer );
+		}
 		
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
@@ -84,17 +111,63 @@ int main() {
 
 
 
-int checkExit() {
-	SDL_Event sdlEvent;
-	while (SDL_PollEvent(&sdlEvent)) {
-		switch (sdlEvent.type) {
-			case SDL_QUIT:
-				return 1;
-				break;
+int eventHandling( SDL_Renderer *rend ) {
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev)) {
+		mouse.x = ev.button.x;
+		mouse.y = ev.button.y;
+
+		if( ev.type == SDL_QUIT ) 
+			return 0; // Quit
+
+		if( ev.type == SDL_MOUSEBUTTONUP ) {
+			soldier.x = (myCity.x1 + myCity.x2) / 2;
+			soldier.y = (myCity.y1 + myCity.y2) / 2;
+			begin = soldier;
+			dest = mouse;
+			if(mouseOnMe) isSendingSoldiers = 1;
+			else isSendingSoldiers = 0;
+			mouseOnMe = 0;
+		}
+		
+		if( ev.type == SDL_MOUSEBUTTONDOWN ) {
+			if(ev.button.button == SDL_BUTTON_LEFT ) {
+
+				if( abs( ev.button.x - ( (myCity.x1 + myCity.x2) / 2 ) ) < CENTER_R  &&  
+				abs( ev.button.y - ( (myCity.y1 + myCity.y2) / 2 ) ) < CENTER_R ) {
+					mouseOnMe = 1;
+				}
+			}
+		}
+
+	}
+	return 1;
+}
+
+
+void sendingSoldiers( SDL_Renderer *rend ) {
+	int flag = 0;
+	if(!flag)
+		for(int i = 0; i < 4; i++) 
+			for(int j = 0; j < n; j++) 
+				if( dest.x <= cities[i][j].x2 && dest.x >= cities[i][j].x1 &&
+					dest.y <= cities[i][j].y2 && dest.y >= cities[i][j].y1 ) {
+						// dest.x = ( cities[i][j].x2 + cities[i][j].x1 ) / 2;
+						// dest.y = ( cities[i][j].y2 + cities[i][j].y1 ) / 2;
+						flag = 1;
+						break;
+					}
+	if(flag){	
+		filledCircleColor( rend , soldier.x , soldier.y , 10 , 0xff000000 );
+		soldier.x += 5 * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+		soldier.y += 5 * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+		// printf("x is :%d and y is: %d\n" , dest.x , dest.y);
+		if( abs(soldier.x - dest.x) <= 2 && abs(soldier.y - dest.y) <= 2 ) {
+			isSendingSoldiers = 0;
 		}
 	}
-	return 0;
 }
+
 
 void print2DCity(int a , int b , City arr[a][b]) {
 	for(int i = 0; i < a; i++) {
@@ -141,6 +214,9 @@ int initializingCities() {
 		enemyj = rand() % n;
 	} while( (enemyi == mei && enemyj == mej) );
 
+	cities[mei][mej].flag = 1;
+	cities[enemyi][enemyj].flag = 2;
+
 	myCity = cities[mei][mej];
 	enemyCity = cities[enemyi][enemyj];
 
@@ -156,21 +232,21 @@ void printMap( SDL_Renderer* rend , int n ) {
 				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
 				200 , 10 , 10 , 255 );
 				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				10 , 150 , 10 , 10 , 255 );				
+				CENTER_R , 150 , 10 , 10 , 255 );				
 			}
 
 			else if( i == enemyi && j == enemyj ) {
 				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
 				10 , 200 , 10 , 255 );
 				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				10 , 10 , 150 , 10 , 255 );
+				CENTER_R , 10 , 150 , 10 , 255 );
 			}
 
 			else {
 				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
 				170 , 200 , 180 , 255 );
 				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				10 , 150 , 160 , 180 , 255 );
+				CENTER_R , 150 , 160 , 180 , 255 );
 			}
 		}
 	}
