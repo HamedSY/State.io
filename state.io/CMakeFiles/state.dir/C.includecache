@@ -11,6 +11,8 @@ stdio.h
 -
 stdlib.h
 -
+string.h
+-
 math.h
 -
 time.h
@@ -20,5 +22,7 @@ SDL2/SDL.h
 SDL2/SDL2_gfxPrimitives.h
 -
 SDL2/SDL_image.h
+-
+SDL2/SDL_ttf.h
 -
 
