@@ -3,6 +3,7 @@
 
 CMakeFiles/state.dir/src/main.c.o: src/game.c
 CMakeFiles/state.dir/src/main.c.o: src/globals.h
+CMakeFiles/state.dir/src/main.c.o: src/login.c
 CMakeFiles/state.dir/src/main.c.o: src/main.c
 CMakeFiles/state.dir/src/main.c.o: src/menu.c
 

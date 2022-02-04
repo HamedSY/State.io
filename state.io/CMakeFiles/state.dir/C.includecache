@@ -20,6 +20,20 @@ globals.h
 
 /home/hamedsy/Desktop/mabani/state.io/src/globals.h
 
+/home/hamedsy/Desktop/mabani/state.io/src/login.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+SDL2/SDL.h
+-
+SDL2/SDL2_gfxPrimitives.h
+-
+globals.h
+/home/hamedsy/Desktop/mabani/state.io/src/globals.h
+
 /home/hamedsy/Desktop/mabani/state.io/src/main.c
 stdio.h
 -
@@ -41,6 +55,8 @@ game.c
 /home/hamedsy/Desktop/mabani/state.io/src/game.c
 menu.c
 /home/hamedsy/Desktop/mabani/state.io/src/menu.c
+login.c
+/home/hamedsy/Desktop/mabani/state.io/src/login.c
 
 /home/hamedsy/Desktop/mabani/state.io/src/menu.c
 stdio.h

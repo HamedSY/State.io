@@ -24,12 +24,13 @@ const int CENTER_R = 15 , SOLDIER_R = 3;
 const int COLOR_SOLDIERS_MAX_NUM = 60;
 const int ORDINARY_SOLDIERS_MAX_NUM = 10;
 
-SDL_Color WHITE = { 0 , 0 , 0 , 255 };
+SDL_Color BLACK = { 0 , 0 , 0 , 255 };
+SDL_Color WHITE = { 255 , 255 , 255 , 255 };
 
 int mei , mej , enemyi , enemyj;
-int mouseOnMe = 0 , isSendingSoldiers = 0;
+int mouseOnMe = 0 , isSendingSoldiers = 0 , isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
 int n;
-char solNumStr[10] = {0};
+char solNumStr[10] = {0} , username[30] = {};
 
 City cities[4][6];
 

@@ -83,7 +83,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 		}
 
 	if(flag){
-		for(int k = 0; k < cities[mei][mej].soldiers_num && k < 100; k++) {
+		// int temp = cities[mei][mej].soldiers_num;
+		for(int k = 0; k < cities[mei][mej].soldiers_num; k++) {
 
 			filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
 			soldier[k].x += 4 * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
@@ -91,12 +92,12 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 ) {
 				isSendingSoldiers = 0;
 				if(cities[i][j].flag == 1) {
-					if(cities[i][j].soldiers_num + cities[mei][mej].soldiers_num <= 60)
-						cities[i][j].soldiers_num += cities[mei][mej].soldiers_num;	
+					cities[i][j].soldiers_num += cities[mei][mej].soldiers_num;	
 					cities[mei][mej].soldiers_num = 0;
 				}
 				else {
 					cities[i][j].soldiers_num -= cities[mei][mej].soldiers_num;
+					// printf("%d" , temp);
 					cities[mei][mej].soldiers_num = 0;
 					if(cities[i][j].soldiers_num < 0) {
 						cities[i][j].soldiers_num = -cities[i][j].soldiers_num;
@@ -112,12 +113,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 void solNumIncreasing() {
 	for(int i = 0; i < 4; i++) {
 		for(int j = 0; j < n; j++) {
-			if(cities[i][j].flag == 0) {
-				if(cities[i][j].soldiers_num < ORDINARY_SOLDIERS_MAX_NUM) {
-					cities[i][j].soldiers_num++;
-				}
-			}
-			else {
+			if(cities[i][j].flag == 1) {
 				if(cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM) {
 					cities[i][j].soldiers_num++;
 				}
@@ -147,7 +143,7 @@ int initializingCities() {
 			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 30;
 			else cities[i][j + 1].y1 = (rand() % 30) + 40;
 
-			cities[i][j].soldiers_num = 0;
+			cities[i][j].soldiers_num = 10;
 
 		}
 	}
