@@ -3,52 +3,66 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-
-typedef struct City {
-	int x1;
-	int x2;
-	int y1;
-	int y2;
-	int theta;
-	int flag;
-	int soldiers_num;
-} City;
-
-typedef struct Coordination {
-	double x;
-	double y;
-} Coordination;
-
-const int SCREEN_WIDTH = 600 , SCREEN_HEIGHT = 600;
-const int FPS = 60;
-const int CENTER_R = 15 , SOLDIER_R = 3;
-const int COLOR_SOLDIERS_MAX_NUM = 60;
-const int ORDINARY_SOLDIERS_MAX_NUM = 10;
-
-SDL_Color WHITE = { 0 , 0 , 0 , 255 };
-
-int mei , mej , enemyi , enemyj;
-int mouseOnMe = 0 , isSendingSoldiers = 0;
-int n;
-char solNumStr[10] = {0};
-
-City cities[4][6];
-
-Coordination begin , dest;
-Coordination mouse , soldier[100];
-Coordination tmp = {0};
+#include "globals.h"
 
 
+int gameEventHandling( SDL_Renderer *rend );
 int initializingCities();
 void print2DCity( int a , int b , City arr[a][b] );
 void printMap( SDL_Renderer* rend , int n );
 void sendingSoldiers( SDL_Renderer *rend );
 void solNumIncreasing();
+
+
+int gameEventHandling( SDL_Renderer *rend ) {
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev)) {
+		mouse.x = ev.button.x;
+		mouse.y = ev.button.y;
+
+		if( ev.type == SDL_QUIT ) 
+			return 0; // Quit
+
+		if( ev.type == SDL_MOUSEBUTTONUP ) {
+			for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
+				soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2) + ((rand() % 20) - 10);
+				soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2) + ((rand() % 20) - 10);
+			}
+
+			begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
+			begin.y = (cities[mei][mej].y1 + cities[mei][mej].y2) / 2;
+
+			dest = mouse;
+			if(mouseOnMe) isSendingSoldiers = 1;
+			else isSendingSoldiers = 0;
+			mouseOnMe = 0;
+		}
+		
+		if( ev.type == SDL_MOUSEBUTTONDOWN ) {
+			if(ev.button.button == SDL_BUTTON_LEFT ) {
+
+				for(int i = 0; i < 4; i++) {
+					for(int j = 0; j < n; j++) {
+						if(cities[i][j].flag == 1) {
+							mei = i; mej = j;
+							if( ev.button.x >= cities[mei][mej].x1 && ev.button.x <= cities[mei][mej].x2  &&  
+							ev.button.y >= cities[mei][mej].y1 && ev.button.y <= cities[mei][mej].y2 ) {
+								mouseOnMe = 1;
+								break;
+							}
+						}
+					}
+					if( mouseOnMe ) break;
+				}
+						
+			}
+		}
+
+	}
+	return 1;
+}
 
 
 void sendingSoldiers( SDL_Renderer *rend ) {
