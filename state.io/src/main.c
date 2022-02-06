@@ -56,43 +56,6 @@ int main() {
 	SDL_Texture *startGameHoverTexture = SDL_CreateTextureFromSurface( myRenderer , startGameHoverSurface );
 	
 
-	
-
-	// menu loop
-	while( 1 ) {
-		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
-		SDL_RenderClear( myRenderer );
-
-		SDL_RenderCopy( myRenderer , menuBackImgTexture , NULL , NULL );
-		SDL_RenderCopy( myRenderer , menuTitleImgTexture , NULL , &menuTitleImgRect );
-		drawMenuBoxes( myRenderer );
-		SDL_RenderCopy( myRenderer , startGameTexture , NULL , &startGameRect );
-
-		// event handling
-		int event = menuEventHandling( myRenderer );
-		if( event == 0 )
-			return 0;
-		if( event == 1 )
-			break;
-		if( isHoverStartGame ) { // hover
-			SDL_RenderCopy( myRenderer , startGameHoverTexture , NULL , &startGameRect );
-		}
-		
-
-
-		SDL_RenderPresent( myRenderer );
-		SDL_Delay( 1000 / FPS );
-		SDL_RenderClear( myRenderer );
-	}
-
-	// destroyings
-	SDL_DestroyTexture( menuTitleImgTexture );
-	SDL_DestroyTexture( startGameTexture );
-	SDL_DestroyTexture( startGameHoverTexture );
-	SDL_FreeSurface( menuTitleImgSurface );
-	SDL_FreeSurface( startGameSurface );
-	SDL_FreeSurface( startGameHoverSurface );
-
 
 //LOGIN
 
@@ -162,6 +125,45 @@ int main() {
 	SDL_FreeSurface( continueHoverSurface );
 	SDL_FreeSurface( continueSurface );
 	SDL_FreeSurface( enterUsernameSurface );
+	
+
+	// menu loop
+	while( 1 ) {
+		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
+		SDL_RenderClear( myRenderer );
+
+		SDL_RenderCopy( myRenderer , menuBackImgTexture , NULL , NULL );
+		SDL_RenderCopy( myRenderer , menuTitleImgTexture , NULL , &menuTitleImgRect );
+		drawMenuBoxes( myRenderer );
+		SDL_RenderCopy( myRenderer , startGameTexture , NULL , &startGameRect );
+
+		// event handling
+		int event = menuEventHandling( myRenderer );
+		if( event == 0 )
+			return 0;
+		if( event == 1 )
+			break;
+		if( isHoverStartGame ) { // hover
+			SDL_RenderCopy( myRenderer , startGameHoverTexture , NULL , &startGameRect );
+		}
+		
+
+
+		SDL_RenderPresent( myRenderer );
+		SDL_Delay( 1000 / FPS );
+		SDL_RenderClear( myRenderer );
+	}
+
+	// destroyings
+	SDL_DestroyTexture( menuTitleImgTexture );
+	SDL_DestroyTexture( startGameTexture );
+	SDL_DestroyTexture( startGameHoverTexture );
+	SDL_FreeSurface( menuTitleImgSurface );
+	SDL_FreeSurface( startGameSurface );
+	SDL_FreeSurface( startGameHoverSurface );
+
+
+
 
 
 // GAME
@@ -266,9 +268,25 @@ int main() {
 
 
 /*
-	bugs: {
-		- vaghti tedad sarbaza mire bala, age ye sarbazkhone dar hale ferestadane sarbaz bashe, dar lahze
-		sarbaze ezefe shode ham ersal mishe;
-		- hamzaman nemishe az chand ta shahr sarbaz eresal kard
+	bakhsh haye baghi mande {
+		- zakhire sazi ha:
+			- usernames
+			- scoreboards
+			- zakhire sazi khode bazi
+
+		- handle kardan chand enemy
+
+		- map haye amaade
+
+		- etmam bazi va moshakhas shodan bakht o bord ha
+
+		- barkhord sarbaz haye 2 harif
+
+		- ma'joons
+	}
+
+
+	bakhsh haye naghes ya bug dar {
+
 	}
 */

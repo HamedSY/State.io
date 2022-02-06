@@ -20,7 +20,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 	SDL_Event ev;
 
 	// AI
-	int flag = 0 , max = 0;
+	int flag = 0 , max = 10;
 	if( frame % AI_ATTACKING_FREQUENCY == 0 ) {
 		for( int i = 0; i < 4; i++ ) {
             for( int j = 0; j < n; j++ ) {
@@ -32,7 +32,6 @@ int gameEventHandling( SDL_Renderer *rend ) {
                     }
                 }
             }
-			// if( flag ) break;
         }
 		if( flag ) {
 			AIisSendingSoldiers = 1;
@@ -50,7 +49,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			do {
 				desti = rand() % 4;
 				destj = rand() % n;
-			} while( (desti == enemyi && destj == enemyj) );
+			} while( (desti == enemyi && destj == enemyj) || (cities[desti][destj].soldiers_num > 40 && cities[desti][destj].flag == 2) );
 
 			dest2.x = ( cities[desti][destj].x1 + cities[desti][destj].x2 ) / 2;
 			dest2.y = ( cities[desti][destj].y1 + cities[desti][destj].y2 ) / 2;
