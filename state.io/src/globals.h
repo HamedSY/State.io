@@ -32,7 +32,7 @@ SDL_Color WHITE = { 255 , 255 , 255 , 255 };
 int mei , mej , enemyi , enemyj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
 int isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
-int n , temp , temp2 , frame = 1 , flag2[200] = {0} , AIflag[200] = {0}; 
+int n , temp , temp2 , frame = 1 , myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , AIflag2[200] = {0}; 
 int desti , destj;
 // int flag = 0;
 double velocity = 3;

@@ -13,13 +13,23 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
     
     for(int k = 0; k < temp2; k++) {
         if( begin2.x >= dest2.x ) 
-            if( soldier2[k].x >= dest2.x ) 
+            if( soldier2[k].x >= dest2.x ) {
                 filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                if( !AIflag2[k] ) {
+					cities[enemyi][enemyj].soldiers_num--;
+                    AIflag2[k] = 1;
+				}
+            }
                 
         
         if( begin2.x < dest2.x ) 
-            if( soldier2[k].x < dest2.x ) 
+            if( soldier2[k].x < dest2.x ) {
                 filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                if( !AIflag2[k] ) {
+					cities[enemyi][enemyj].soldiers_num--;
+                    AIflag2[k] = 1;
+				}
+            }
     
             
         soldier2[k].x += velocity * (dest2.x - begin2.x) / ( sqrt ( ( (dest2.x - begin2.x) * (dest2.x - begin2.x) ) + ( (dest2.y - begin2.y) * (dest2.y - begin2.y) ) ) );
@@ -30,12 +40,11 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
                 if( cities[desti][destj].flag == 2 ) {
                     incdec = 1;
                 }
-                if( cities[desti][destj].soldiers_num == 0 ) {
+                if( cities[desti][destj].soldiers_num <= 0 ) {
                     cities[desti][destj].flag = 2;
                     incdec = 1;
                 }
                 cities[desti][destj].soldiers_num += incdec;
-                cities[enemyi][enemyj].soldiers_num--;
                 AIflag[k] = 1;
             }
         }

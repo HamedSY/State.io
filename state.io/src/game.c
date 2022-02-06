@@ -20,22 +20,25 @@ int gameEventHandling( SDL_Renderer *rend ) {
 	SDL_Event ev;
 
 	// AI
-	int flag = 0;
+	int flag = 0 , max = 0;
 	if( frame % AI_ATTACKING_FREQUENCY == 0 ) {
 		for( int i = 0; i < 4; i++ ) {
             for( int j = 0; j < n; j++ ) {
                 if( cities[i][j].flag == 2 ) {
-                    if( rand() % 2 ) {
+                    if( cities[i][j].soldiers_num > max ) {
+						max = cities[i][j].soldiers_num;
                         flag = 1;
                         enemyi = i; enemyj = j;
                     }
                 }
             }
+			// if( flag ) break;
         }
 		if( flag ) {
 			AIisSendingSoldiers = 1;
 			cities[enemyi][enemyj].isSendingSol = 1;
 			zeroer( 200 , AIflag );
+			zeroer( 200 , AIflag2 );
 			temp2 = cities[enemyi][enemyj].soldiers_num;
 			for(int i = 0; i < cities[enemyi][enemyj].soldiers_num; i++) {
 				soldier2[i].x = ((cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2);
@@ -76,7 +79,8 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			if(mouseOnMe) {
 				isSendingSoldiers = 1; 
 				temp = cities[mei][mej].soldiers_num;
-				zeroer( 200 , flag2 );
+				zeroer( 200 , myflag );
+				zeroer( 200 , myflag2 );
 			}
 			else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
 			mouseOnMe = 0;
@@ -128,31 +132,43 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 	if(flag) {
 		cities[mei][mej].isSendingSol = 1;
 		for(int k = 0; k < temp; k++) {
-			if( begin.x >= dest.x ) 
-				if( soldier[k].x >= dest.x ) 
+			if( begin.x >= dest.x ) {
+				if( soldier[k].x >= dest.x ) {
 					filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+					if( !myflag2[k] ) {
+						cities[mei][mej].soldiers_num--;
+						myflag2[k] = 1;
+					}
+				}
+			}
 					
 			
-			if( begin.x < dest.x ) 
-				if( soldier[k].x < dest.x ) 
+			if( begin.x < dest.x ) {
+				if( soldier[k].x < dest.x ) {
 					filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+					if( !myflag2[k] ) {
+						cities[mei][mej].soldiers_num--;
+						myflag2[k] = 1;
+					}
+				}
+			}
 		
 				
 			soldier[k].x += velocity * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			soldier[k].y += velocity * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			
 			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 ) {
-				if( !flag2[k] ) {
+				if( !myflag[k] ) {
 					if( cities[i][j].flag == 1 ) {
 						incdec = 1;
 					}
-					if( cities[i][j].soldiers_num == 0 ) {
+					if( cities[i][j].soldiers_num <= 0 ) {
 						cities[i][j].flag = 1;
 						incdec = 1;
 					}
 					cities[i][j].soldiers_num += incdec;
-					cities[mei][mej].soldiers_num--;
-					flag2[k] = 1;
+					
+					myflag[k] = 1;
 				}
 			}
 			
