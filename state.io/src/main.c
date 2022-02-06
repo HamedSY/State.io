@@ -270,6 +270,7 @@ int main() {
 
 
 /*
+
 	bakhsh haye baghi mande {
 
 		- zakhire sazi ha:
@@ -277,11 +278,11 @@ int main() {
 			- scoreboards
 			- zakhire sazi khode bazi
 
-		- handle kardan chand enemy
+		//- handle kardan chand enemy
 
 		- map haye amaade
 
-		- moshakhas shodan bakht o bord ha baad az etmam bazi
+		- moshakhas shodan baakht o bord ha baad az etmam bazi
 
 		- barkhord sarbaz haye 2 harif
 
@@ -292,9 +293,6 @@ int main() {
 	bakhsh haye naghes ya bug dar {
 		
 		- hamle hamzaman
-
-		- bozorg kardan safhe
-
-		- ro khodesh mouse ro vel mikonam tedad sarbazash 0 mishe		
 	}
+
 */

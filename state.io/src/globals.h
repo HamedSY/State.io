@@ -34,7 +34,6 @@ int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
 int isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
 int n , temp , temp2 , frame = 1 , myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , AIflag2[200] = {0}; 
 int inputLoc = 0;
-// int flag = 0;
 double velocity = 3;
 char solNumStr[10] = {0} , username[30] = {};
 

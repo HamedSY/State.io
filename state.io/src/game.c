@@ -69,8 +69,9 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 		if( ev.type == SDL_MOUSEBUTTONUP ) {
 			
-			if( !isSendingSoldiers && mouseOnMe && !( dest.x <= cities[mei][mej].x2 && dest.x >= cities[mei][mej].x1 &&
-				dest.y <= cities[mei][mej].y2 && dest.y >= cities[mei][mej].y1 ) ) {
+			if( !isSendingSoldiers && mouseOnMe ) {
+				
+				// printf("!hmmm\n");
 
 				for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
 				soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
@@ -130,6 +131,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 					dest.x = (cities[i][j].x1 + cities[i][j].x2) / 2;
 					dest.y = (cities[i][j].y1 + cities[i][j].y2) / 2;
 					flag = 1;
+					// printf("flag is okay\n");
 					break;
 				}
 			}
@@ -165,6 +167,13 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			soldier[k].x += velocity * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			soldier[k].y += velocity * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			
+			// for(int u = 0; u < temp2; u++) {
+			// 	if( abs( soldier[k].x - soldier2[u].x ) < 3 && abs( soldier[k].y - soldier2[u].y ) < 3 ) {
+			// 		cities[mei][mej].soldiers_num--;
+			// 		cities[enemyi][enemyj].soldiers_num--;
+			// 	}
+			// }
+			
 			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 ) {
 				if( !myflag[k] ) {
 					if( cities[i][j].flag == 1 ) {
@@ -183,8 +192,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 
 			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && k == temp - 1 ) {
 				isSendingSoldiers = 0;
+				// printf("zero\n");
 				cities[mei][mej].isSendingSol = 0;
-				// flag = 0;
 			}
 
 			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
