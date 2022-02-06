@@ -10,11 +10,11 @@
 #include "game.c"
 #include "menu.c"
 #include "login.c"
+#include "ai.c"
 
 
 int main() {
 	srand(time(NULL));
-	int frame = 1;
 
 	// inits
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
@@ -32,7 +32,7 @@ int main() {
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	//fonts
 	TTF_Font *LiberationReg15 = TTF_OpenFont("fonts/LiberationSerif-Regular.ttf" , 15);
-	TTF_Font *IRNazanin30 = TTF_OpenFont("fonts/IRNazanin.ttf" , 30);
+	TTF_Font *IRNazanin50 = TTF_OpenFont("fonts/IRNazanin.ttf" , 50);
 
 
 // MENU
@@ -139,7 +139,7 @@ int main() {
 			SDL_RenderCopy( myRenderer , continueHoverTexture , NULL , &continueRect );
 
 		if( isTyping ) {
-			textInputSurface = TTF_RenderText_Solid( IRNazanin30 , username , BLACK );
+			textInputSurface = TTF_RenderText_Solid( IRNazanin50 , username , BLACK );
 			textInputTexture = SDL_CreateTextureFromSurface( myRenderer , textInputSurface );
 			textInputRect.x = 70; textInputRect.y = 300;
 			SDL_QueryTexture( textInputTexture , NULL , NULL , &textInputRect.w , &textInputRect.h );
@@ -154,6 +154,14 @@ int main() {
 	}
 
 	SDL_StopTextInput();
+	SDL_DestroyTexture( textInputTexture );
+	SDL_DestroyTexture( continueHoverTexture );
+	SDL_DestroyTexture( continueTexture );
+	SDL_DestroyTexture( enterUsernameTexture );
+	SDL_FreeSurface( textInputSurface );
+	SDL_FreeSurface( continueHoverSurface );
+	SDL_FreeSurface( continueSurface );
+	SDL_FreeSurface( enterUsernameSurface );
 
 
 // GAME
@@ -207,7 +215,6 @@ int main() {
 			lineColor( myRenderer , (cities[mei][mej].x1 + cities[mei][mej].x2) / 2 , (cities[mei][mej].y1 + cities[mei][mej].y2) / 2
 			, mouse.x , mouse.y , 0xff000000 );
 		}
-
 		if( isSendingSoldiers ) {
 			sendingSoldiers( myRenderer );
 		}
@@ -216,25 +223,29 @@ int main() {
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
 
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < n; j++) {
+				SDL_DestroyTexture( solNumTexture[i][j] );
+				SDL_FreeSurface( solNumSurface[i][j] );
+			}
+		}
+
 		frame++;
-		if(frame % 60 == 0) {
+		if(frame % 60 == 0) 
 			solNumIncreasing();
+
+		if(frame % 1000 == 0) 
 			frame = 1;
-		} 
 		
 	}
 
 	
 	SDL_DestroyWindow( myWindow );
 	SDL_DestroyRenderer( myRenderer );
+
     SDL_DestroyTexture( mapBackImgTexture );
 	SDL_FreeSurface( mapBackImgSurface );
-	for(int i = 0; i < 4; i++) {
-		for(int j = 0; j < n; j++) {
-			SDL_DestroyTexture( solNumTexture[i][j] );
-			SDL_FreeSurface( solNumSurface[i][j] );
-		}
-	}
+	
 	SDL_Quit();
 	IMG_Quit();
 	TTF_Quit();
@@ -252,6 +263,5 @@ int main() {
 		- vaghti tedad sarbaza mire bala, age ye sarbazkhone dar hale ferestadane sarbaz bashe, dar lahze
 		sarbaze ezefe shode ham ersal mishe;
 		- hamzaman nemishe az chand ta shahr sarbaz eresal kard
-
 	}
 */

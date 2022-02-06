@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/hamedsy/Desktop/mabani/state.io/src/ai.c
+stdio.h
+-
+stdlib.h
+-
+SDL2/SDL.h
+-
+SDL2/SDL2_gfxPrimitives.h
+-
+globals.h
+/home/hamedsy/Desktop/mabani/state.io/src/globals.h
+
 /home/hamedsy/Desktop/mabani/state.io/src/game.c
 stdio.h
 -
@@ -57,6 +69,8 @@ menu.c
 /home/hamedsy/Desktop/mabani/state.io/src/menu.c
 login.c
 /home/hamedsy/Desktop/mabani/state.io/src/login.c
+ai.c
+/home/hamedsy/Desktop/mabani/state.io/src/ai.c
 
 /home/hamedsy/Desktop/mabani/state.io/src/menu.c
 stdio.h

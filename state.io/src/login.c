@@ -14,6 +14,7 @@ void usernameInputBox( SDL_Renderer *rend );
 
 int loginEventHandling( SDL_Renderer *rend ) {
 	SDL_Event ev;
+	const unsigned char *keystate = SDL_GetKeyboardState(NULL);
 	while (SDL_PollEvent(&ev)) {
 		mouse.x = ev.button.x;
 		mouse.y = ev.button.y;
@@ -30,12 +31,21 @@ int loginEventHandling( SDL_Renderer *rend ) {
 			isHoverContinue = 0;
         
         if( ev.type == SDL_TEXTINPUT || ev.type == SDL_KEYDOWN ) {
-			strcat( username , ev.text.text );
-			// printf("%s\n" , username);
-			isTyping = 1;
+			if( ev.type == SDL_TEXTINPUT ) {
+				strcat( username , ev.text.text );
+				isTyping = 1;
+			}
+			else if( ev.type == SDL_KEYDOWN ) {
+				if( keystate[SDL_SCANCODE_BACKSPACE] && strlen( username ) > 0 ) {
+					username[ strlen(username) - 1 ] = '\0';
+				}
+			}
 		}
 		
     }
+
+	
+
     return -1;
 }
 
