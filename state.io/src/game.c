@@ -18,6 +18,44 @@ void solNumIncreasing();
 
 int gameEventHandling( SDL_Renderer *rend ) {
 	SDL_Event ev;
+
+	// AI
+	int flag = 0;
+	if( frame % AI_ATTACKING_FREQUENCY == 0 ) {
+		for( int i = 0; i < 4; i++ ) {
+            for( int j = 0; j < n; j++ ) {
+                if( cities[i][j].flag == 2 ) {
+                    if( rand() % 2 ) {
+                        flag = 1;
+                        enemyi = i; enemyj = j;
+                    }
+                }
+            }
+        }
+		if( flag ) {
+			AIisSendingSoldiers = 1;
+			cities[enemyi][enemyj].isSendingSol = 1;
+			zeroer( 200 , AIflag );
+			temp2 = cities[enemyi][enemyj].soldiers_num;
+			for(int i = 0; i < cities[enemyi][enemyj].soldiers_num; i++) {
+				soldier2[i].x = ((cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2);
+				soldier2[i].y = ((cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2);
+			}
+			begin2.x = (cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2;
+			begin2.y = (cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2;
+
+			do {
+				desti = rand() % 4;
+				destj = rand() % n;
+			} while( (desti == enemyi && destj == enemyj) );
+
+			dest2.x = ( cities[desti][destj].x1 + cities[desti][destj].x2 ) / 2;
+			dest2.y = ( cities[desti][destj].y1 + cities[desti][destj].y2 ) / 2;
+
+		}
+	}
+
+	// EVENTS
 	while (SDL_PollEvent(&ev)) {
 		mouse.x = ev.button.x;
 		mouse.y = ev.button.y;
@@ -63,7 +101,6 @@ int gameEventHandling( SDL_Renderer *rend ) {
 						
 			}
 		}
-
 	}
 	return 1;
 }
@@ -123,6 +160,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && k == temp - 1 ) {
 				isSendingSoldiers = 0;
 				cities[mei][mej].isSendingSol = 0;
+				// flag = 0;
 			}
 
 			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
@@ -168,7 +206,7 @@ int initializingCities() {
 			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 30;
 			else cities[i][j + 1].y1 = (rand() % 30) + 40;
 
-			cities[i][j].soldiers_num = 40;
+			cities[i][j].soldiers_num = 10;
 			cities[i][j].isSendingSol = 0;
 
 		}

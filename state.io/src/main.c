@@ -208,6 +208,11 @@ int main() {
 			}
 		}
 
+		// AI handling
+		if( AIisSendingSoldiers ) {
+			AIsendingSoldiers( myRenderer );
+		}
+
 		// event handling
 		if( !gameEventHandling( myRenderer ) )
 			break;
@@ -231,10 +236,12 @@ int main() {
 		}
 
 		frame++;
-		if(frame % 60 == 0) 
+		if( frame % 60 == 0 ) 
 			solNumIncreasing();
+		if( frame % 1500 == 0 )
+			AIisSendingSoldiers = 1;
 
-		if(frame % 1000 == 0) 
+		if(frame % 10000 == 0) 
 			frame = 1;
 		
 	}

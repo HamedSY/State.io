@@ -9,26 +9,49 @@
 
 
 void AIsendingSoldiers( SDL_Renderer *rend ) {
-    int flag = 0;
-    for( int i = 0; i < 4; i++ ) {
-        for( int j = 0; j < n; j++ ) {
-            if( cities[i][j].flag == 2 ) {
-                if( rand() % 2 ) {
-                    flag = 1;
-                    enemyi = i; enemyj = j;
+    int incdec = -1;
+    
+    for(int k = 0; k < temp2; k++) {
+        if( begin2.x >= dest2.x ) 
+            if( soldier2[k].x >= dest2.x ) 
+                filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                
+        
+        if( begin2.x < dest2.x ) 
+            if( soldier2[k].x < dest2.x ) 
+                filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+    
+            
+        soldier2[k].x += velocity * (dest2.x - begin2.x) / ( sqrt ( ( (dest2.x - begin2.x) * (dest2.x - begin2.x) ) + ( (dest2.y - begin2.y) * (dest2.y - begin2.y) ) ) );
+        soldier2[k].y += velocity * (dest2.y - begin2.y) / ( sqrt ( ( (dest2.x - begin2.x) * (dest2.x - begin2.x) ) + ( (dest2.y - begin2.y) * (dest2.y - begin2.y) ) ) );
+        
+        if( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 ) {
+            if( !AIflag[k] ) {
+                if( cities[desti][destj].flag == 2 ) {
+                    incdec = 1;
                 }
+                if( cities[desti][destj].soldiers_num == 0 ) {
+                    cities[desti][destj].flag = 2;
+                    incdec = 1;
+                }
+                cities[desti][destj].soldiers_num += incdec;
+                cities[enemyi][enemyj].soldiers_num--;
+                AIflag[k] = 1;
             }
         }
-    }
+        
 
-    if( flag ) {
-
-        begin2.x = (cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2;
-		begin2.y = (cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2;
-
-        for(int k = 0; k < cities[enemyi][enemyj].soldiers_num; k++) {
-
+        if( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 && k == temp2 - 1 ) {
+            AIisSendingSoldiers = 0;
+            cities[enemyi][enemyj].isSendingSol = 0;
+            // flag = 0;
         }
+
+        if( ( abs( soldier2[k].x - soldier2[k + 1].x ) <= 10 ) && ( abs( soldier2[k].y - soldier2[k + 1].y ) <= 10 ) ) {
+            break;
+        }
+        else velocity = 3;
+
 
     }
 
