@@ -193,7 +193,7 @@ void solNumIncreasing() {
 	for(int i = 0; i < 4; i++) {
 		for(int j = 0; j < n; j++) {
 			if(cities[i][j].flag) {
-				if(cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM && !cities[i][j].isSendingSol) {
+				if(cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM ) {
 					cities[i][j].soldiers_num ++;
 				}
 			}
