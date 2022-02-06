@@ -19,7 +19,7 @@ typedef struct Coordination {
 } Coordination;
 
 
-const int SCREEN_WIDTH = 600 , SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 1000 , SCREEN_HEIGHT = 600;
 const int FPS = 60;
 const int CENTER_R = 15 , SOLDIER_R = 3;
 const int COLOR_SOLDIERS_MAX_NUM = 60;
@@ -29,11 +29,11 @@ const int AI_ATTACKING_FREQUENCY = 400;
 SDL_Color BLACK = { 0 , 0 , 0 , 255 };
 SDL_Color WHITE = { 255 , 255 , 255 , 255 };
 
-int mei , mej , enemyi , enemyj;
+int mei , mej , enemyi , enemyj , desti , destj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
 int isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
 int n , temp , temp2 , frame = 1 , myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , AIflag2[200] = {0}; 
-int desti , destj;
+int inputLoc = 0;
 // int flag = 0;
 double velocity = 3;
 char solNumStr[10] = {0} , username[30] = {};

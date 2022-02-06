@@ -44,13 +44,13 @@ int main() {
 	// menu title
 	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title2.png");
 	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
-	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 100; menuTitleImgRect.y = 50;
+	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 300; menuTitleImgRect.y = 50;
 	menuTitleImgRect.w = 400; menuTitleImgRect.h = 150;
 
 	// menu boxs' texts (image)
 	SDL_Surface *startGameSurface = IMG_Load("images/start_game.png");
 	SDL_Texture *startGameTexture = SDL_CreateTextureFromSurface( myRenderer , startGameSurface );
-	SDL_Rect startGameRect; startGameRect.x = 200; startGameRect.y = 285; startGameRect.w = 200; startGameRect.h = 55;
+	SDL_Rect startGameRect; startGameRect.x = 400; startGameRect.y = 260; startGameRect.w = 200; startGameRect.h = 60;
 
 	SDL_Surface *startGameHoverSurface = IMG_Load("images/start_game_hover.png");
 	SDL_Texture *startGameHoverTexture = SDL_CreateTextureFromSurface( myRenderer , startGameHoverSurface );
@@ -62,13 +62,13 @@ int main() {
 	// enter your username please...
 	SDL_Surface *enterUsernameSurface = IMG_Load("images/enter.png");
 	SDL_Texture *enterUsernameTexture = SDL_CreateTextureFromSurface( myRenderer , enterUsernameSurface );
-	SDL_Rect enterUsernameRect; enterUsernameRect.x = 50; enterUsernameRect.y = 150;
-	enterUsernameRect.w = 500; enterUsernameRect.h = 75;
+	SDL_Rect enterUsernameRect; enterUsernameRect.x = 250; enterUsernameRect.y = 160;
+	enterUsernameRect.w = 500; enterUsernameRect.h = 60;
 
 	// continue
 	SDL_Surface *continueSurface = IMG_Load("images/continue.png");
 	SDL_Texture *continueTexture = SDL_CreateTextureFromSurface( myRenderer , continueSurface );
-	SDL_Rect continueRect; continueRect.x = 230; continueRect.y = 440;
+	SDL_Rect continueRect; continueRect.x = 430; continueRect.y = 440;
 	continueRect.w = 140; continueRect.h = 50;
 	SDL_Surface *continueHoverSurface = IMG_Load("images/continue_hover.png");
 	SDL_Texture *continueHoverTexture = SDL_CreateTextureFromSurface( myRenderer , continueHoverSurface );
@@ -77,7 +77,7 @@ int main() {
 	SDL_StartTextInput();
 	SDL_Surface *textInputSurface;
 	SDL_Texture *textInputTexture;
-	SDL_Rect textInputRect; textInputRect.x = 70; textInputRect.y = 300;
+	SDL_Rect textInputRect; textInputRect.x = (SCREEN_WIDTH / 2); textInputRect.y = 300;
 
 
 
@@ -104,7 +104,7 @@ int main() {
 		if( isTyping ) {
 			textInputSurface = TTF_RenderText_Solid( IRNazanin50 , username , BLACK );
 			textInputTexture = SDL_CreateTextureFromSurface( myRenderer , textInputSurface );
-			textInputRect.x = 70; textInputRect.y = 300;
+			textInputRect.x = (SCREEN_WIDTH / 2) - inputLoc; textInputRect.y = 300;
 			SDL_QueryTexture( textInputTexture , NULL , NULL , &textInputRect.w , &textInputRect.h );
 			SDL_RenderCopy( myRenderer , textInputTexture , NULL , &textInputRect );
 		}
@@ -161,8 +161,6 @@ int main() {
 	SDL_FreeSurface( menuTitleImgSurface );
 	SDL_FreeSurface( startGameSurface );
 	SDL_FreeSurface( startGameHoverSurface );
-
-
 
 
 
@@ -225,6 +223,7 @@ int main() {
 		if( isSendingSoldiers ) {
 			sendingSoldiers( myRenderer );
 		}
+
 		
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
@@ -238,8 +237,11 @@ int main() {
 		}
 
 		frame++;
-		if( frame % 60 == 0 ) 
+		if( frame % 60 == 0 ) {
 			solNumIncreasing();
+			if(checkTheEnd() == 1)
+				break;
+		}
 		if( frame % 1500 == 0 )
 			AIisSendingSoldiers = 1;
 
@@ -269,6 +271,7 @@ int main() {
 
 /*
 	bakhsh haye baghi mande {
+
 		- zakhire sazi ha:
 			- usernames
 			- scoreboards
@@ -278,7 +281,7 @@ int main() {
 
 		- map haye amaade
 
-		- etmam bazi va moshakhas shodan bakht o bord ha
+		- moshakhas shodan bakht o bord ha baad az etmam bazi
 
 		- barkhord sarbaz haye 2 harif
 
@@ -287,6 +290,11 @@ int main() {
 
 
 	bakhsh haye naghes ya bug dar {
+		
+		- hamle hamzaman
 
+		- bozorg kardan safhe
+
+		- ro khodesh mouse ro vel mikonam tedad sarbazash 0 mishe		
 	}
 */

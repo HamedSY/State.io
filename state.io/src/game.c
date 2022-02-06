@@ -14,6 +14,7 @@ void print2DCity( int a , int b , City arr[a][b] );
 void printMap( SDL_Renderer* rend , int n );
 void sendingSoldiers( SDL_Renderer *rend );
 void solNumIncreasing();
+int checkTheEnd();
 
 
 int gameEventHandling( SDL_Renderer *rend ) {
@@ -21,7 +22,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 	// AI
 	int flag = 0 , max = 10;
-	if( frame % AI_ATTACKING_FREQUENCY == 0 ) {
+	if( frame % AI_ATTACKING_FREQUENCY == 50 && !AIisSendingSoldiers ) {
 		for( int i = 0; i < 4; i++ ) {
             for( int j = 0; j < n; j++ ) {
                 if( cities[i][j].flag == 2 ) {
@@ -49,7 +50,8 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			do {
 				desti = rand() % 4;
 				destj = rand() % n;
-			} while( (desti == enemyi && destj == enemyj) || (cities[desti][destj].soldiers_num > 40 && cities[desti][destj].flag == 2) );
+			} while( ( desti == enemyi && destj == enemyj ) || ( cities[desti][destj].soldiers_num > 40 && cities[desti][destj].flag == 2 )
+				  || ( cities[desti][destj].flag == 2 ) || ( cities[desti][destj].soldiers_num >= cities[enemyi][enemyj].soldiers_num ) );
 
 			dest2.x = ( cities[desti][destj].x1 + cities[desti][destj].x2 ) / 2;
 			dest2.y = ( cities[desti][destj].y1 + cities[desti][destj].y2 ) / 2;
@@ -66,22 +68,26 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			return 0; // Quit
 
 		if( ev.type == SDL_MOUSEBUTTONUP ) {
-			for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
+			
+			if( !isSendingSoldiers && mouseOnMe && !( dest.x <= cities[mei][mej].x2 && dest.x >= cities[mei][mej].x1 &&
+				dest.y <= cities[mei][mej].y2 && dest.y >= cities[mei][mej].y1 ) ) {
+
+				for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
 				soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
 				soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2);
-			}
+				}
 
-			begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
-			begin.y = (cities[mei][mej].y1 + cities[mei][mej].y2) / 2;
+				begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
+				begin.y = (cities[mei][mej].y1 + cities[mei][mej].y2) / 2;
 
-			dest = mouse;
-			if(mouseOnMe) {
+				dest = mouse;
+
 				isSendingSoldiers = 1; 
 				temp = cities[mei][mej].soldiers_num;
 				zeroer( 200 , myflag );
 				zeroer( 200 , myflag2 );
 			}
-			else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
+			// else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
 			mouseOnMe = 0;
 		}
 		
@@ -117,7 +123,10 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 		for(i = 0; i < 4; i++) {
 			for(j = 0; j < n; j++) {
 				if( dest.x <= cities[i][j].x2 && dest.x >= cities[i][j].x1 &&
-				dest.y <= cities[i][j].y2 && dest.y >= cities[i][j].y1 ) {
+				dest.y <= cities[i][j].y2 && dest.y >= cities[i][j].y1 &&
+				!( dest.x <= cities[mei][mej].x2 && dest.x >= cities[mei][mej].x1 &&
+				dest.y <= cities[mei][mej].y2 && dest.y >= cities[mei][mej].y1 ) ) {
+
 					dest.x = (cities[i][j].x1 + cities[i][j].x2) / 2;
 					dest.y = (cities[i][j].y1 + cities[i][j].y2) / 2;
 					flag = 1;
@@ -200,8 +209,27 @@ void solNumIncreasing() {
 	}
 }
 
+int checkTheEnd() {
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < n; j++) {
+			if( cities[i][j].flag ) {
+				for( int k = 0 ; k < 4; k++ ) {
+					for( int u = 0; u < n; u++ ) {
+						if( cities[i][j].flag != cities[k][u].flag && cities[k][u].flag != 0 ) {
+							return 0;
+						}
+					}
+				}
+				return 1;
+			}
+		}
+	}			
+	return -1;
+}
+
+
 int initializingCities() {
-	int length[6] = {0} , width[4][6] = {0} , theta , n = 3 + (rand() % 2);
+	int length[6] = {0} , width[4][6] = {0} , theta , n = 4 + (rand() % 3);
 	int color = 0xff000000;
 	
 	for(int i = 0; i < 4; i++) {
@@ -211,14 +239,14 @@ int initializingCities() {
 
 		for(int j = 0; j < n; j++) {
 			theta = (rand() % 10) + 5;
-			if(i == 0) length[j] = (rand() % 50) + 70 - (n * 3);
-			width[i][j] = (rand() % 50) + 50;
+			if(i == 0) length[j] = (rand() % 30) + 370 - (n * 50);
+			width[i][j] = (rand() % 30) + 60;
 			cities[i][j].x2 = cities[i][j].x1 + length[j];
 			cities[i][j].y2 = cities[i][j].y1 + width[i][j];
 			cities[i][j].theta = theta;
 
-			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 30;
-			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 30;
+			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 40;
+			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 40;
 			else cities[i][j + 1].y1 = (rand() % 30) + 40;
 
 			cities[i][j].soldiers_num = 10;

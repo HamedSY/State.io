@@ -21,7 +21,7 @@ int loginEventHandling( SDL_Renderer *rend ) {
 
 		if( ev.type == SDL_QUIT ) 
 			return 0; // Quit
-        if( mouse.x > 200 && mouse.x < 400 && mouse.y > 430 && mouse.y < 500 ) {
+        if( mouse.x > 400 && mouse.x < 600 && mouse.y > 430 && mouse.y < 500 ) {
 			isHoverContinue = 1;
 			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
 				return 1;
@@ -30,14 +30,19 @@ int loginEventHandling( SDL_Renderer *rend ) {
 		else 
 			isHoverContinue = 0;
         
-        if( ev.type == SDL_TEXTINPUT || ev.type == SDL_KEYDOWN ) {
-			if( ev.type == SDL_TEXTINPUT ) {
+        if( ( ev.type == SDL_TEXTINPUT || ev.type == SDL_KEYDOWN ) ) {
+			if( ev.type == SDL_TEXTINPUT && inputLoc < 200 ) {
 				strcat( username , ev.text.text );
+				inputLoc += 8;
 				isTyping = 1;
 			}
 			else if( ev.type == SDL_KEYDOWN ) {
 				if( keystate[SDL_SCANCODE_BACKSPACE] && strlen( username ) > 0 ) {
 					username[ strlen(username) - 1 ] = '\0';
+					inputLoc -= 8;
+				}
+				else if ( ev.key.keysym.sym == SDLK_RETURN ) {
+					return 1;
 				}
 			}
 		}
@@ -51,8 +56,8 @@ int loginEventHandling( SDL_Renderer *rend ) {
 
 
 void usernameInputBox( SDL_Renderer *rend ) {
-    roundedBoxColor( rend , 50 , 250 , 550 , 400 , 10 , 0xdfffffff );
-    roundedBoxColor( rend , 200 , 430 , 400 , 500 , 10 , 0xdf12af32  );
+    roundedBoxColor( rend , 250 , 250 , 750 , 400 , 10 , 0xdfffffff );
+    roundedBoxColor( rend , 400 , 430 , 600 , 500 , 10 , 0xdf12af32  );
 }
 
 

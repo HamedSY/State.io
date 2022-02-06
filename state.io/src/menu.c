@@ -13,9 +13,9 @@ void drawBox( SDL_Renderer *rend );
 
 
 void drawMenuBoxes( SDL_Renderer *rend ) {
-	roundedBoxColor( rend , 150 , 275 , 450 , 350 , 10 , 0xdfffffff );
-	roundedBoxColor( rend , 150 , 375 , 450 , 450 , 10 , 0xdfffffff );
-	roundedBoxColor( rend , 150 , 475 , 450 , 550 , 10 , 0xdfffffff );
+	roundedBoxColor( rend , 350 , 250 , 650 , 330 , 10 , 0xdfffffff );
+	roundedBoxColor( rend , 350 , 365 , 650 , 445 , 10 , 0xdfffffff );
+	roundedBoxColor( rend , 350 , 480 , 650 , 560 , 10 , 0xdfffffff );
 }
 
 int menuEventHandling( SDL_Renderer *rend ) {
@@ -26,7 +26,7 @@ int menuEventHandling( SDL_Renderer *rend ) {
 
 		if( ev.type == SDL_QUIT ) 
 			return 0; // Quit
-		if( mouse.x > 150 && mouse.x < 450 && mouse.y > 275 && mouse.y < 350 ) {
+		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 250 && mouse.y < 330 ) {
 			isHoverStartGame = 1;
 			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
 				return 1;
