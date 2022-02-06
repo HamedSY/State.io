@@ -30,7 +30,7 @@ SDL_Color WHITE = { 255 , 255 , 255 , 255 };
 
 int mei , mej , enemyi , enemyj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
-int n , temp , frame = 1 , flag2 = 0; 
+int n , temp , frame = 1 , flag2[200] = {0}; 
 double velocity = 3;
 char solNumStr[10] = {0} , username[30] = {};
 
@@ -39,6 +39,13 @@ City cities[4][6];
 Coordination begin , dest , begin2 , dest2;
 Coordination mouse , soldier[200] , soldier2[200];
 Coordination tmp = {0};
+
+
+
+void zeroer( int n , int a[] ) {
+	for(int i = 0; i < n; i++)
+		a[i] = 0;
+}
 
 
 
