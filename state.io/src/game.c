@@ -217,7 +217,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			
 			// hit
 			for(int u = 0; u < temp2; u++) {
-				if( abs( soldier[k].x - soldier2[u].x ) < SOLDIER_R + 2 && abs( soldier[k].y - soldier2[u].y ) < SOLDIER_R + 2 &&
+				if( abs( soldier[k].x - soldier2[u].x ) < SOLDIER_R + 1 && abs( soldier[k].y - soldier2[u].y ) < SOLDIER_R + 1 &&
 				( ( begin2.x > dest2.x && soldier2[u].x > dest2.x ) || ( begin2.x < dest2.x && soldier2[u].x < dest2.x ) ) ) {
 					if( !hitflag[k] ) {
 						hitflag[k] = 1;

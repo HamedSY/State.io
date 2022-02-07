@@ -67,7 +67,7 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
 
         // hit
         for(int u = 0; u < temp; u++) {
-            if( abs( soldier2[k].x - soldier[u].x ) < SOLDIER_R + 2 && abs( soldier2[k].y - soldier[u].y ) < SOLDIER_R + 2 &&
+            if( abs( soldier2[k].x - soldier[u].x ) < SOLDIER_R + 1 && abs( soldier2[k].y - soldier[u].y ) < SOLDIER_R + 1 &&
             ( ( begin.x > dest.x && soldier[u].x > dest.x ) || ( begin.x < dest.x && soldier[u].x < dest.x ) ) ) {
                 if( !AIhitflag[k] ) {
                     AIhitflag[k] = 1;
@@ -94,7 +94,7 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
         if( ( abs(soldier2[ temp2 - 1 ].x - dest2.x) <= 10 && abs(soldier2[ temp2 - 1 ].y - dest2.y) <= 10 ) ||
         AIhitcounter == temp2  ) {
             AIisSendingSoldiers = 0;
-            printf("AI got 0\n");
+            // printf("AI got 0\n");
             AIhitcounter = 0;
             coordZeroer( 200 , soldier2 );
             cities[enemyi][enemyj].isSendingSol = 0;

@@ -13,9 +13,9 @@ void drawBox( SDL_Renderer *rend );
 
 
 void drawMenuBoxes( SDL_Renderer *rend ) {
-	roundedBoxColor( rend , 350 , 250 , 650 , 330 , 10 , 0xdfffffff );
-	roundedBoxColor( rend , 350 , 365 , 650 , 445 , 10 , 0xdfffffff );
-	roundedBoxColor( rend , 350 , 480 , 650 , 560 , 10 , 0xdfffffff );
+	roundedBoxRGBA( rend , 350 , 250 , 650 , 330 , 10 , LIGHT_BLUE.r , LIGHT_BLUE.g , LIGHT_BLUE.b , LIGHT_BLUE.a );
+	roundedBoxRGBA( rend , 350 , 365 , 650 , 445 , 10 , LIGHT_BLUE.r , LIGHT_BLUE.g , LIGHT_BLUE.b , LIGHT_BLUE.a );
+	roundedBoxRGBA( rend , 350 , 480 , 650 , 560 , 10 , LIGHT_BLUE.r , LIGHT_BLUE.g , LIGHT_BLUE.b , LIGHT_BLUE.a );
 }
 
 int menuEventHandling( SDL_Renderer *rend ) {
@@ -27,13 +27,33 @@ int menuEventHandling( SDL_Renderer *rend ) {
 		if( ev.type == SDL_QUIT ) 
 			return 0; // Quit
 		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 250 && mouse.y < 330 ) {
-			isHoverStartGame = 1;
+			isHovernewGame = 1;
 			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
 				return 1;
 			}
 		}
 		else 
-			isHoverStartGame = 0;
+			isHovernewGame = 0;
+
+
+		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 365 && mouse.y < 445 ) {
+			isHoverLoadGame = 1;
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				return 2;
+			}
+		}
+		else 
+			isHoverLoadGame = 0;
+
+
+		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 480 && mouse.y < 560 ) {
+			isHoverScoreBoard = 1;
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				return 3;
+			}
+		}
+		else 
+			isHoverScoreBoard = 0;
     }
     return -1;
 }

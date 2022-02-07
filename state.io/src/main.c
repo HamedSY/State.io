@@ -32,13 +32,12 @@ int main() {
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	//fonts
 	TTF_Font *LiberationReg15 = TTF_OpenFont("fonts/LiberationSerif-Regular.ttf" , 15);
-	TTF_Font *WishingBird50 = TTF_OpenFont("fonts/Wishing Bird.ttf" , 50);
-	TTF_Font *RuganiPayne50 = TTF_OpenFont("fonts/RuganiPayne.ttf" , 50);
-	TTF_Font *albaReg50 = TTF_OpenFont("fonts/alba.regular.ttf" , 50);
-	TTF_Font *oval50 = TTF_OpenFont("fonts/Oval Single.otf" , 50);
+	TTF_Font *funtasia50 = TTF_OpenFont("fonts/Funtasia.otf" , 50);
+	TTF_Font *funtasia70 = TTF_OpenFont("fonts/Funtasia.otf" , 70);
+	TTF_Font *funtasia40 = TTF_OpenFont("fonts/Funtasia.otf" , 40);
 
 	// menu background image
-	SDL_Surface *menuBackImgSurface = IMG_Load("images/menu_back.jpeg");
+	SDL_Surface *menuBackImgSurface = IMG_Load("images/back2.jpg");
 	SDL_Texture *menuBackImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuBackImgSurface);
 
 	
@@ -48,18 +47,16 @@ int main() {
 //LOGIN
 
 	// enter your username please...
-	SDL_Surface *enterUsernameSurface = IMG_Load("images/enter.png");
+	SDL_Surface *enterUsernameSurface = TTF_RenderText_Blended( funtasia70 , "Enter Your Username Please" , ORANGE );
 	SDL_Texture *enterUsernameTexture = SDL_CreateTextureFromSurface( myRenderer , enterUsernameSurface );
-	SDL_Rect enterUsernameRect; enterUsernameRect.x = 250; enterUsernameRect.y = 160;
-	enterUsernameRect.w = 500; enterUsernameRect.h = 60;
+	SDL_Rect enterUsernameRect; enterUsernameRect.x = 145; enterUsernameRect.y = 140;
+	SDL_QueryTexture( enterUsernameTexture , NULL , NULL , &enterUsernameRect.w , &enterUsernameRect.h );
 
 	// continue
-	SDL_Surface *continueSurface = IMG_Load("images/continue.png");
+	SDL_Surface *continueSurface = TTF_RenderText_Blended( funtasia40 , "Continue" , WHITE );
 	SDL_Texture *continueTexture = SDL_CreateTextureFromSurface( myRenderer , continueSurface );
-	SDL_Rect continueRect; continueRect.x = 430; continueRect.y = 440;
-	continueRect.w = 140; continueRect.h = 50;
-	SDL_Surface *continueHoverSurface = IMG_Load("images/continue_hover.png");
-	SDL_Texture *continueHoverTexture = SDL_CreateTextureFromSurface( myRenderer , continueHoverSurface );
+	SDL_Rect continueRect; continueRect.x = 430; continueRect.y = 460;
+	SDL_QueryTexture( continueTexture , NULL , NULL , &continueRect.w , &continueRect.h );
 
 	// text input
 	SDL_StartTextInput();
@@ -87,10 +84,10 @@ int main() {
 		if( event == 1 )
 			break;
 		if( isHoverContinue )
-			SDL_RenderCopy( myRenderer , continueHoverTexture , NULL , &continueRect );
+			roundedBoxRGBA( myRenderer , 400 , 450 , 600 , 520 , 10 , 255 , 255 , 255 , 60 );
 
 		if( isTyping ) {
-			textInputSurface = TTF_RenderText_Solid( oval50 , username , BLACK );
+			textInputSurface = TTF_RenderText_Solid( funtasia50 , username , DARK_BLUE );
 			textInputTexture = SDL_CreateTextureFromSurface( myRenderer , textInputSurface );
 			textInputRect.x = (SCREEN_WIDTH / 2) - inputLoc; textInputRect.y = 300;
 			SDL_QueryTexture( textInputTexture , NULL , NULL , &textInputRect.w , &textInputRect.h );
@@ -106,11 +103,9 @@ int main() {
 
 	SDL_StopTextInput();
 	SDL_DestroyTexture( textInputTexture );
-	SDL_DestroyTexture( continueHoverTexture );
 	SDL_DestroyTexture( continueTexture );
 	SDL_DestroyTexture( enterUsernameTexture );
 	SDL_FreeSurface( textInputSurface );
-	SDL_FreeSurface( continueHoverSurface );
 	SDL_FreeSurface( continueSurface );
 	SDL_FreeSurface( enterUsernameSurface );
 	
@@ -120,16 +115,24 @@ int main() {
 	// menu title
 	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title2.png");
 	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
-	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 300; menuTitleImgRect.y = 50;
-	menuTitleImgRect.w = 400; menuTitleImgRect.h = 150;
+	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 260; menuTitleImgRect.y = 20;
+	SDL_QueryTexture( menuTitleImgTexture , NULL , NULL , &menuTitleImgRect.w , &menuTitleImgRect.h );
 
 	// menu boxs' texts (image)
-	SDL_Surface *startGameSurface = IMG_Load("images/start_game.png");
-	SDL_Texture *startGameTexture = SDL_CreateTextureFromSurface( myRenderer , startGameSurface );
-	SDL_Rect startGameRect; startGameRect.x = 400; startGameRect.y = 260; startGameRect.w = 200; startGameRect.h = 60;
+	SDL_Surface *newGameSurface = TTF_RenderText_Blended( funtasia50 , "New Game" , WHITE );
+	SDL_Texture *newGameTexture = SDL_CreateTextureFromSurface( myRenderer , newGameSurface );
+	SDL_Rect newGameRect; newGameRect.x = 410; newGameRect.y = 260;
+	SDL_QueryTexture( newGameTexture , NULL , NULL , &newGameRect.w , &newGameRect.h );
 
-	SDL_Surface *startGameHoverSurface = IMG_Load("images/start_game_hover.png");
-	SDL_Texture *startGameHoverTexture = SDL_CreateTextureFromSurface( myRenderer , startGameHoverSurface );
+	SDL_Surface *loadGameSurface = TTF_RenderText_Blended( funtasia50 , "Load Game" , WHITE );
+	SDL_Texture *loadGameTexture = SDL_CreateTextureFromSurface( myRenderer , loadGameSurface );
+	SDL_Rect loadGameRect; loadGameRect.x = 405; loadGameRect.y = 375;
+	SDL_QueryTexture( loadGameTexture , NULL , NULL , &loadGameRect.w , &loadGameRect.h );
+
+	SDL_Surface *scoreBoardSurface = TTF_RenderText_Blended( funtasia50 , "Scoreboard" , WHITE );
+	SDL_Texture *scoreBoardTexture = SDL_CreateTextureFromSurface( myRenderer , scoreBoardSurface );
+	SDL_Rect scoreBoardRect; scoreBoardRect.x = 390; scoreBoardRect.y = 490;
+	SDL_QueryTexture( scoreBoardTexture , NULL , NULL , &scoreBoardRect.w , &scoreBoardRect.h );
 
 
 	// menu loop
@@ -140,7 +143,9 @@ int main() {
 		SDL_RenderCopy( myRenderer , menuBackImgTexture , NULL , NULL );
 		SDL_RenderCopy( myRenderer , menuTitleImgTexture , NULL , &menuTitleImgRect );
 		drawMenuBoxes( myRenderer );
-		SDL_RenderCopy( myRenderer , startGameTexture , NULL , &startGameRect );
+		SDL_RenderCopy( myRenderer , newGameTexture , NULL , &newGameRect );
+		SDL_RenderCopy( myRenderer , loadGameTexture , NULL , &loadGameRect );
+		SDL_RenderCopy( myRenderer , scoreBoardTexture , NULL , &scoreBoardRect );
 
 		// event handling
 		int event = menuEventHandling( myRenderer );
@@ -148,9 +153,15 @@ int main() {
 			return 0;
 		if( event == 1 )
 			break;
-		if( isHoverStartGame ) { // hover
-			SDL_RenderCopy( myRenderer , startGameHoverTexture , NULL , &startGameRect );
-		}
+		if( isHovernewGame )  
+			roundedBoxRGBA( myRenderer , 350 , 250 , 650 , 330 , 10 , 255 , 255 , 255 , 60 );
+
+		if( isHoverLoadGame )
+			roundedBoxRGBA( myRenderer , 350 , 365 , 650 , 445 , 10 , 255 , 255 , 255 , 60 );
+
+		if( isHoverScoreBoard )
+			roundedBoxRGBA( myRenderer , 350 , 480 , 650 , 560 , 10 , 255 , 255 , 255 , 60 );
+		
 		
 
 		SDL_RenderPresent( myRenderer );
@@ -160,11 +171,13 @@ int main() {
 
 	// destroyings
 	SDL_DestroyTexture( menuTitleImgTexture );
-	SDL_DestroyTexture( startGameTexture );
-	SDL_DestroyTexture( startGameHoverTexture );
+	SDL_DestroyTexture( newGameTexture );
+	SDL_DestroyTexture( loadGameTexture );
+	SDL_DestroyTexture( scoreBoardTexture );
 	SDL_FreeSurface( menuTitleImgSurface );
-	SDL_FreeSurface( startGameSurface );
-	SDL_FreeSurface( startGameHoverSurface );
+	SDL_FreeSurface( newGameSurface );
+	SDL_FreeSurface( loadGameSurface );
+	SDL_FreeSurface( scoreBoardSurface );
 
 
 // MAP CHOOSING
@@ -306,6 +319,10 @@ int main() {
 	bakhsh haye naghes ya bug dar {
 		
 		//- hamle hamzaman
+
+		- hamle tan be tan ya inke har do be ye ja hamle konim
+
+		- taghviat AI
 	}
 
 */

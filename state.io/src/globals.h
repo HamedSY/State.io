@@ -24,14 +24,20 @@ const int FPS = 60;
 const int CENTER_R = 15 , SOLDIER_R = 3;
 const int COLOR_SOLDIERS_MAX_NUM = 60;
 const int ORDINARY_SOLDIERS_MAX_NUM = 10;
-const int AI_ATTACKING_FREQUENCY = 400;
+const int AI_ATTACKING_FREQUENCY = 100;
 
 SDL_Color BLACK = { 0 , 0 , 0 , 255 };
 SDL_Color WHITE = { 255 , 255 , 255 , 255 };
+SDL_Color YELLOW = { 255 , 231 , 47 , 255 };
+SDL_Color ORANGE = { 255 , 178 , 0 , 255 };
+SDL_Color LIGHT_BLUE = { 0 , 103 , 217 , 255 };
+SDL_Color DARK_BLUE = { 0 , 24 , 168 , 255 };
+SDL_Color LIGHT_PURPLE = { 149 , 50 , 170 , 255 };
+SDL_Color DARK_PURPLE = { 81 , 40 , 136 , 255 };
 
 int mei , mej , enemyi , enemyj , desti , destj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
-int isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
+int isHovernewGame = 0 , isHoverContinue = 0 , isTyping = 0 , isHoverLoadGame = 0 , isHoverScoreBoard = 0;
 int end = 0;
 int n , temp , temp2 , frame = 1;
 int myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , 
