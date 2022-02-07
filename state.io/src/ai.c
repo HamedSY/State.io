@@ -12,30 +12,70 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
     int incdec = -1;
     
     for(int k = 0; k < temp2; k++) {
-        if( begin2.x >= dest2.x ) 
-            if( soldier2[k].x >= dest2.x ) {
-                filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
-                if( !AIflag2[k] ) {
-					cities[enemyi][enemyj].soldiers_num--;
-                    AIflag2[k] = 1;
-				}
+
+        if( !AIhitflag[k] ) {
+
+            if( begin2.x > dest2.x ) {
+                if( soldier2[k].x > dest2.x ) {
+                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                    if( !AIflag2[k] ) {
+                        cities[enemyi][enemyj].soldiers_num--;
+                        AIflag2[k] = 1;
+                    }
+                }
             }
-                
-        
-        if( begin2.x < dest2.x ) 
-            if( soldier2[k].x < dest2.x ) {
-                filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
-                if( !AIflag2[k] ) {
-					cities[enemyi][enemyj].soldiers_num--;
-                    AIflag2[k] = 1;
-				}
-            }
-    
+                    
             
+            else if( begin2.x < dest2.x ) {
+                if( soldier2[k].x < dest2.x ) {
+                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                    if( !AIflag2[k] ) {
+                        cities[enemyi][enemyj].soldiers_num--;
+                        AIflag2[k] = 1;
+                    }
+                }
+            }
+
+            else {
+
+                if( begin2.y < dest2.y ) {
+                    if( soldier2[k].y < dest2.y ) {
+                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                        if( !AIflag2[k] ) {
+                            cities[enemyi][enemyj].soldiers_num--;
+                            AIflag2[k] = 1;
+                        }
+                    }
+                }
+
+                else if( begin2.y > dest2.y ) {
+                    if( soldier2[k].y > dest2.y ) {
+                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                        if( !AIflag2[k] ) {
+                            cities[enemyi][enemyj].soldiers_num--;
+                            AIflag2[k] = 1;
+                        }
+                    }
+                }
+                
+            }
+
+        }
+    
         soldier2[k].x += velocity * (dest2.x - begin2.x) / ( sqrt ( ( (dest2.x - begin2.x) * (dest2.x - begin2.x) ) + ( (dest2.y - begin2.y) * (dest2.y - begin2.y) ) ) );
         soldier2[k].y += velocity * (dest2.y - begin2.y) / ( sqrt ( ( (dest2.x - begin2.x) * (dest2.x - begin2.x) ) + ( (dest2.y - begin2.y) * (dest2.y - begin2.y) ) ) );
+
+        // hit
+        for(int u = 0; u < temp; u++) {
+            if( abs( soldier2[k].x - soldier[u].x ) < SOLDIER_R && abs( soldier2[k].y - soldier[u].y ) < SOLDIER_R &&
+            ( ( begin.x > dest.x && soldier[u].x > dest.x ) || ( begin.x < dest.x && soldier[u].x < dest.x ) ) ) {
+                if( !AIhitflag[k] ) {
+                    AIhitflag[k] = 1;
+                }
+            }
+        }
         
-        if( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 ) {
+        if( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 && !AIhitflag[k] ) {
             if( !AIflag[k] ) {
                 if( cities[desti][destj].flag == 2 ) {
                     incdec = 1;
@@ -50,8 +90,10 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
         }
         
 
-        if( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 && k == temp2 - 1 ) {
+        if( ( abs(soldier2[k].x - dest2.x) <= 10 && abs(soldier2[k].y - dest2.y) <= 10 && k == temp2 - 1 ) ||
+        AIhitflag[ temp2 - 1 ] || AIhitflag[ temp2 - 2 ] ) {
             AIisSendingSoldiers = 0;
+            coordZeroer( 200 , soldier2 );
             cities[enemyi][enemyj].isSendingSol = 0;
             // flag = 0;
         }

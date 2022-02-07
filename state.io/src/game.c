@@ -39,6 +39,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			cities[enemyi][enemyj].isSendingSol = 1;
 			zeroer( 200 , AIflag );
 			zeroer( 200 , AIflag2 );
+			zeroer( 200 , AIhitflag );
 			temp2 = cities[enemyi][enemyj].soldiers_num;
 			for(int i = 0; i < cities[enemyi][enemyj].soldiers_num; i++) {
 				soldier2[i].x = ((cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2);
@@ -69,13 +70,15 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 		if( ev.type == SDL_MOUSEBUTTONUP ) {
 			
-			if( !isSendingSoldiers && mouseOnMe ) {
+			if( !isSendingSoldiers && mouseOnMe &&
+			!( mouse.x > cities[mei][mej].x1 && mouse.x < cities[mei][mej].x2 &&
+			mouse.y > cities[mei][mej].y1 && mouse.y < cities[mei][mej].y2 ) ) {
 				
 				// printf("!hmmm\n");
 
 				for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
-				soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
-				soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2);
+					soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
+					soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2);
 				}
 
 				begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
@@ -87,6 +90,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 				temp = cities[mei][mej].soldiers_num;
 				zeroer( 200 , myflag );
 				zeroer( 200 , myflag2 );
+				zeroer( 200 , hitflag );
 			}
 			// else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
 			mouseOnMe = 0;
@@ -142,39 +146,72 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 	if(flag) {
 		cities[mei][mej].isSendingSol = 1;
 		for(int k = 0; k < temp; k++) {
-			if( begin.x >= dest.x ) {
-				if( soldier[k].x >= dest.x ) {
-					filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
-					if( !myflag2[k] ) {
-						cities[mei][mej].soldiers_num--;
-						myflag2[k] = 1;
+
+			if( !hitflag[k] ) {
+
+				if( begin.x > dest.x ) {
+					if( soldier[k].x > dest.x ) {
+						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+						if( !myflag2[k] ) {
+							cities[mei][mej].soldiers_num--;
+							myflag2[k] = 1;
+						}
 					}
 				}
-			}
-					
-			
-			if( begin.x < dest.x ) {
-				if( soldier[k].x < dest.x ) {
-					filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
-					if( !myflag2[k] ) {
-						cities[mei][mej].soldiers_num--;
-						myflag2[k] = 1;
+						
+				
+				else if( begin.x < dest.x ) {
+					if( soldier[k].x < dest.x ) {
+						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+						if( !myflag2[k] ) {
+							cities[mei][mej].soldiers_num--;
+							myflag2[k] = 1;
+						}
 					}
 				}
+
+				else {
+
+					if( begin.y < dest.y ) {
+						if( soldier[k].y < dest.y ) {
+							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+							if( !myflag2[k] ) {
+								cities[mei][mej].soldiers_num--;
+								myflag2[k] = 1;
+							}
+						}
+					}
+
+					else if( begin.y > dest.y ) {
+						if( soldier[k].y > dest.y ) {
+							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+							if( !myflag2[k] ) {
+								cities[mei][mej].soldiers_num--;
+								myflag2[k] = 1;
+							}
+						}
+					}
+				}
+
 			}
 		
-				
+			
 			soldier[k].x += velocity * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			soldier[k].y += velocity * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
 			
-			// for(int u = 0; u < temp2; u++) {
-			// 	if( abs( soldier[k].x - soldier2[u].x ) < 3 && abs( soldier[k].y - soldier2[u].y ) < 3 ) {
-			// 		cities[mei][mej].soldiers_num--;
-			// 		cities[enemyi][enemyj].soldiers_num--;
-			// 	}
-			// }
 			
-			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 ) {
+			// hit
+			for(int u = 0; u < temp2; u++) {
+				if( abs( soldier[k].x - soldier2[u].x ) < SOLDIER_R + 2 && abs( soldier[k].y - soldier2[u].y ) < SOLDIER_R + 2 &&
+				( ( begin2.x > dest2.x && soldier2[u].x > dest2.x ) || ( begin2.x < dest2.x && soldier2[u].x < dest2.x ) ) ) {
+					if( !hitflag[k] ) {
+						hitflag[k] = 1;
+						// printf("k is : %d\tu is : %d\n" , k , u);
+					}
+				}
+			}
+			
+			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && !hitflag[k] ) {
 				if( !myflag[k] ) {
 					if( cities[i][j].flag == 1 ) {
 						incdec = 1;
@@ -190,13 +227,15 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			}
 			
 
-			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && k == temp - 1 ) {
+			if( ( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && k == temp - 1 ) ||
+			hitflag[ temp - 1 ] || hitflag[ temp - 2 ] ) {
 				isSendingSoldiers = 0;
-				// printf("zero\n");
+            	// soldier[ temp - 1 ].x = 0; soldier[ temp - 1 ].y = 0;
+				coordZeroer( 200 , soldier );
 				cities[mei][mej].isSendingSol = 0;
 			}
 
-			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
+			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 8 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 8 ) ) {
 				break;
 			}
 			else velocity = 3;
@@ -272,7 +311,9 @@ int initializingCities() {
 	} while( (enemyi == mei && enemyj == mej) );
 
 	cities[mei][mej].flag = 1;
+	cities[mei][mej].soldiers_num += 30;
 	cities[enemyi][enemyj].flag = 2;
+	cities[enemyi][enemyj].soldiers_num += 30;
 
 	return n;
 }

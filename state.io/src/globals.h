@@ -32,7 +32,9 @@ SDL_Color WHITE = { 255 , 255 , 255 , 255 };
 int mei , mej , enemyi , enemyj , desti , destj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
 int isHoverStartGame = 0 , isHoverContinue = 0 , isTyping = 0;
-int n , temp , temp2 , frame = 1 , myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , AIflag2[200] = {0}; 
+int n , temp , temp2 , frame = 1;
+int myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , 
+AIflag2[200] = {0} , hitflag[200] = {0} , AIhitflag[200] = {0};
 int inputLoc = 0;
 double velocity = 3;
 char solNumStr[10] = {0} , username[30] = {};
@@ -48,6 +50,13 @@ Coordination tmp = {0};
 void zeroer( int n , int a[] ) {
 	for(int i = 0; i < n; i++)
 		a[i] = 0;
+}
+
+void coordZeroer( int n , Coordination a[] ) {
+	for(int i = 0; i < n; i++) {
+		a[i].x = 0;
+		a[i].y = 0;
+	}
 }
 
 

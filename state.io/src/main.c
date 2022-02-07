@@ -148,7 +148,6 @@ int main() {
 		}
 		
 
-
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
@@ -241,6 +240,7 @@ int main() {
 			solNumIncreasing();
 			if(checkTheEnd() == 1)
 				break;
+			printf("issending is : %d\t AIissending: %d\n" , isSendingSoldiers , AIisSendingSoldiers);
 		}
 		if( frame % 1500 == 0 )
 			AIisSendingSoldiers = 1;
