@@ -32,28 +32,16 @@ int main() {
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	//fonts
 	TTF_Font *LiberationReg15 = TTF_OpenFont("fonts/LiberationSerif-Regular.ttf" , 15);
-	TTF_Font *IRNazanin50 = TTF_OpenFont("fonts/IRNazanin.ttf" , 50);
-
-
-// MENU
+	TTF_Font *WishingBird50 = TTF_OpenFont("fonts/Wishing Bird.ttf" , 50);
+	TTF_Font *RuganiPayne50 = TTF_OpenFont("fonts/RuganiPayne.ttf" , 50);
+	TTF_Font *albaReg50 = TTF_OpenFont("fonts/alba.regular.ttf" , 50);
+	TTF_Font *oval50 = TTF_OpenFont("fonts/Oval Single.otf" , 50);
 
 	// menu background image
 	SDL_Surface *menuBackImgSurface = IMG_Load("images/menu_back.jpeg");
 	SDL_Texture *menuBackImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuBackImgSurface);
 
-	// menu title
-	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title2.png");
-	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
-	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 300; menuTitleImgRect.y = 50;
-	menuTitleImgRect.w = 400; menuTitleImgRect.h = 150;
-
-	// menu boxs' texts (image)
-	SDL_Surface *startGameSurface = IMG_Load("images/start_game.png");
-	SDL_Texture *startGameTexture = SDL_CreateTextureFromSurface( myRenderer , startGameSurface );
-	SDL_Rect startGameRect; startGameRect.x = 400; startGameRect.y = 260; startGameRect.w = 200; startGameRect.h = 60;
-
-	SDL_Surface *startGameHoverSurface = IMG_Load("images/start_game_hover.png");
-	SDL_Texture *startGameHoverTexture = SDL_CreateTextureFromSurface( myRenderer , startGameHoverSurface );
+	
 	
 
 
@@ -102,7 +90,7 @@ int main() {
 			SDL_RenderCopy( myRenderer , continueHoverTexture , NULL , &continueRect );
 
 		if( isTyping ) {
-			textInputSurface = TTF_RenderText_Solid( IRNazanin50 , username , BLACK );
+			textInputSurface = TTF_RenderText_Solid( oval50 , username , BLACK );
 			textInputTexture = SDL_CreateTextureFromSurface( myRenderer , textInputSurface );
 			textInputRect.x = (SCREEN_WIDTH / 2) - inputLoc; textInputRect.y = 300;
 			SDL_QueryTexture( textInputTexture , NULL , NULL , &textInputRect.w , &textInputRect.h );
@@ -126,6 +114,23 @@ int main() {
 	SDL_FreeSurface( continueSurface );
 	SDL_FreeSurface( enterUsernameSurface );
 	
+
+// MENU
+
+	// menu title
+	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title2.png");
+	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
+	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 300; menuTitleImgRect.y = 50;
+	menuTitleImgRect.w = 400; menuTitleImgRect.h = 150;
+
+	// menu boxs' texts (image)
+	SDL_Surface *startGameSurface = IMG_Load("images/start_game.png");
+	SDL_Texture *startGameTexture = SDL_CreateTextureFromSurface( myRenderer , startGameSurface );
+	SDL_Rect startGameRect; startGameRect.x = 400; startGameRect.y = 260; startGameRect.w = 200; startGameRect.h = 60;
+
+	SDL_Surface *startGameHoverSurface = IMG_Load("images/start_game_hover.png");
+	SDL_Texture *startGameHoverTexture = SDL_CreateTextureFromSurface( myRenderer , startGameHoverSurface );
+
 
 	// menu loop
 	while( 1 ) {
@@ -160,6 +165,9 @@ int main() {
 	SDL_FreeSurface( menuTitleImgSurface );
 	SDL_FreeSurface( startGameSurface );
 	SDL_FreeSurface( startGameHoverSurface );
+
+
+// MAP CHOOSING
 
 
 
@@ -223,6 +231,21 @@ int main() {
 			sendingSoldiers( myRenderer );
 		}
 
+		if( frame % 60 == 0 ) {
+			if( !end ) {
+				solNumIncreasing();
+				if(checkTheEnd() == 1) {
+					end = 1;
+				}
+			}
+				
+			// printf("issending is : %d\t AIissending: %d\n" , isSendingSoldiers , AIisSendingSoldiers);
+		}
+
+		if(end) {
+			boxColor( myRenderer , 0 , 0 , SCREEN_WIDTH , SCREEN_HEIGHT , 0xaa000000 );
+			// SDL_Delay( 2000 );
+		}
 		
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
@@ -236,14 +259,6 @@ int main() {
 		}
 
 		frame++;
-		if( frame % 60 == 0 ) {
-			solNumIncreasing();
-			if(checkTheEnd() == 1)
-				break;
-			printf("issending is : %d\t AIissending: %d\n" , isSendingSoldiers , AIisSendingSoldiers);
-		}
-		if( frame % 1500 == 0 )
-			AIisSendingSoldiers = 1;
 
 		if(frame % 10000 == 0) 
 			frame = 1;
@@ -284,15 +299,13 @@ int main() {
 
 		- moshakhas shodan baakht o bord ha baad az etmam bazi
 
-		- barkhord sarbaz haye 2 harif
-
 		- ma'joons
 	}
 
 
 	bakhsh haye naghes ya bug dar {
 		
-		- hamle hamzaman
+		//- hamle hamzaman
 	}
 
 */

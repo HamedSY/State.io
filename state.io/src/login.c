@@ -33,13 +33,13 @@ int loginEventHandling( SDL_Renderer *rend ) {
         if( ( ev.type == SDL_TEXTINPUT || ev.type == SDL_KEYDOWN ) ) {
 			if( ev.type == SDL_TEXTINPUT && inputLoc < 200 ) {
 				strcat( username , ev.text.text );
-				inputLoc += 8;
+				inputLoc += 9;
 				isTyping = 1;
 			}
 			else if( ev.type == SDL_KEYDOWN ) {
 				if( keystate[SDL_SCANCODE_BACKSPACE] && strlen( username ) > 0 ) {
 					username[ strlen(username) - 1 ] = '\0';
-					inputLoc -= 8;
+					inputLoc -= 9;
 				}
 				else if ( ev.key.keysym.sym == SDLK_RETURN ) {
 					return 1;
