@@ -25,7 +25,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 	int correctAttack = 0;
 
 	if( frame % AI_ATTACKING_FREQUENCY == 50 && !AIisSendingSoldiers ) {
-		for( int i = 0; i < 4; i++ ) {
+		for( int i = 0; i < 3; i++ ) {
             for( int j = 0; j < n; j++ ) {
                 if( cities[i][j].flag == 2 ) {
                     if( cities[i][j].soldiers_num > max ) {
@@ -53,7 +53,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			begin2.y = (cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2;
 
 			do {
-				desti = rand() % 4;
+				desti = rand() % 3;
 				destj = rand() % n;
 			} while( ( desti == enemyi && destj == enemyj ) || ( cities[desti][destj].soldiers_num > 40 && cities[desti][destj].flag == 2 )
 				  || ( cities[desti][destj].flag == 2 ) || ( cities[desti][destj].soldiers_num >= cities[enemyi][enemyj].soldiers_num ) );
@@ -78,7 +78,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			!( mouse.x > cities[mei][mej].x1 && mouse.x < cities[mei][mej].x2 &&
 			mouse.y > cities[mei][mej].y1 && mouse.y < cities[mei][mej].y2 ) ) {
 				
-				for( int i = 0; i < 4; i++ ) {
+				for( int i = 0; i < 3; i++ ) {
 					for( int j = 0; j < n; j++ ) {
 						if( ev.button.x >= cities[i][j].x1 && ev.button.x <= cities[i][j].x2  &&  
 						ev.button.y >= cities[i][j].y1 && ev.button.y <= cities[i][j].y2 ) {
@@ -114,7 +114,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 		if( ev.type == SDL_MOUSEBUTTONDOWN ) {
 			if(ev.button.button == SDL_BUTTON_LEFT ) {
 
-				for(int i = 0; i < 4; i++) {
+				for(int i = 0; i < 3; i++) {
 					for(int j = 0; j < n; j++) {
 						if(cities[i][j].flag == 1) {
 							mei = i; mej = j;
@@ -140,7 +140,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 	if(!flag) {
 		
 		incdec = -1;
-		for(i = 0; i < 4; i++) {
+		for(i = 0; i < 3; i++) {
 			for(j = 0; j < n; j++) {
 				if( dest.x <= cities[i][j].x2 && dest.x >= cities[i][j].x1 &&
 				dest.y <= cities[i][j].y2 && dest.y >= cities[i][j].y1 &&
@@ -263,7 +263,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 }
 
 void solNumIncreasing() {
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < n; j++) {
 			if(cities[i][j].flag) {
 				if(cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM ) {
@@ -275,10 +275,10 @@ void solNumIncreasing() {
 }
 
 int checkTheEnd() {
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < n; j++) {
 			if( cities[i][j].flag ) {
-				for( int k = 0 ; k < 4; k++ ) {
+				for( int k = 0 ; k < 3; k++ ) {
 					for( int u = 0; u < n; u++ ) {
 						if( cities[i][j].flag != cities[k][u].flag && cities[k][u].flag != 0 ) {
 							return 0;
@@ -294,36 +294,36 @@ int checkTheEnd() {
 
 
 int initializingCities() {
-	int length[6] = {0} , width[4][6] = {0} , theta , n = 4 + (rand() % 3);
+	int n = 4 + (rand() % 2);
 	int color = 0xff000000;
 	
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < 3; i++) {
 		cities[i][0].x1 = 40 + (rand() % 30);
-		if(i != 0) cities[i][0].y1 = (rand() % 20) + 30 + cities[i - 1][0].y2;
-		else cities[i][0].y1 = (rand() % 30) + 40;
+		if(i != 0) cities[i][0].y1 = (rand() % 20) + 15 + cities[i - 1][0].y2;
+		else cities[i][0].y1 = (rand() % 20) + 15;
 
 		for(int j = 0; j < n; j++) {
-			theta = (rand() % 10) + 5;
-			if(i == 0) length[j] = (rand() % 30) + 370 - (n * 50);
-			width[i][j] = (rand() % 30) + 60;
-			cities[i][j].x2 = cities[i][j].x1 + length[j];
-			cities[i][j].y2 = cities[i][j].y1 + width[i][j];
-			cities[i][j].theta = theta;
+			cities[i][j].x2 = cities[i][j].x1 + 150;
+			cities[i][j].y2 = cities[i][j].y1 + 150;
 
-			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 40;
-			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 40;
-			else cities[i][j + 1].y1 = (rand() % 30) + 40;
+			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 270 - (n * 50);
+			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 15;
+			else cities[i][j + 1].y1 = (rand() % 20) + 15;
 
 			cities[i][j].soldiers_num = 10;
 			cities[i][j].isSendingSol = 0;
+			cities[i][j].number = ( rand() % 18 ) + 1;
+
+			planetsRect[i][j].x = cities[i][j].x1;
+			planetsRect[i][j].y = cities[i][j].y1;
 
 		}
 	}
 
-	mei = rand() % 4;
+	mei = rand() % 3;
 	mej = rand() % n;
 	do {
-		enemyi = rand() % 4;
+		enemyi = rand() % 3;
 		enemyj = rand() % n;
 	} while( (enemyi == mei && enemyj == mej) );
 
@@ -336,32 +336,37 @@ int initializingCities() {
 }
 
 void printMap( SDL_Renderer* rend , int n ) {
-	int theta;
-	for(int i = 0; i < 4; i++) {
+
+	char planetsNames[18][20];
+	int counter = 0;
+	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < n; j++) {
 			
 			if( cities[i][j].flag == 1 ) {
-				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
-				200 , 10 , 10 , 255 );
-				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				CENTER_R , 150 , 10 , 10 , 255 );				
+				sprintf( planetsNames[counter] , "planets/r%d.png" , cities[i][j].number );
+				planetsTexture[counter] = IMG_LoadTexture( rend , planetsNames[counter] );
+				SDL_QueryTexture( planetsTexture[counter] , NULL , NULL , &planetsRect[i][j].w , &planetsRect[i][j].h );
+				SDL_RenderCopy( rend , planetsTexture[counter] , NULL , &planetsRect[i][j] );
 			}
 
 			else if( cities[i][j].flag == 2 ) {
-				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
-				10 , 200 , 10 , 255 );
-				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				CENTER_R , 10 , 150 , 10 , 255 );
+				sprintf( planetsNames[counter] , "planets/y%d.png" , cities[i][j].number );
+				planetsTexture[counter] = IMG_LoadTexture( rend , planetsNames[counter] );
+				SDL_QueryTexture( planetsTexture[counter] , NULL , NULL , &planetsRect[i][j].w , &planetsRect[i][j].h );
+				SDL_RenderCopy( rend , planetsTexture[counter] , NULL , &planetsRect[i][j] );
 			}
 
 			else {
-				roundedBoxRGBA( rend , cities[i][j].x1 , cities[i][j].y1 , cities[i][j].x2 , cities[i][j].y2 , cities[i][j].theta ,
-				170 , 200 , 180 , 255 );
-				filledCircleRGBA( rend , (cities[i][j].x1 + cities[i][j].x2) / 2 , (cities[i][j].y1 + cities[i][j].y2) / 2 ,
-				CENTER_R , 150 , 160 , 180 , 255 );
+				sprintf( planetsNames[counter] , "planets/bw%d.png" , cities[i][j].number );
+				planetsTexture[counter] = IMG_LoadTexture( rend , planetsNames[counter] );
+				SDL_QueryTexture( planetsTexture[counter] , NULL , NULL , &planetsRect[i][j].w , &planetsRect[i][j].h );
+				SDL_RenderCopy( rend , planetsTexture[counter] , NULL , &planetsRect[i][j] );
 			}
+
+			counter++;
 		}
 	}
+
 }
 
 

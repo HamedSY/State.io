@@ -11,6 +11,7 @@ typedef struct City {
 	int flag;
 	int soldiers_num;
 	int isSendingSol;
+	int number;
 } City;
 
 typedef struct Coordination {
@@ -53,6 +54,8 @@ Coordination begin , dest , begin2 , dest2;
 Coordination mouse , soldier[200] , soldier2[200];
 Coordination tmp = {0};
 
+SDL_Rect planetsRect[4][6];
+SDL_Texture *planetsTexture[18];
 
 
 void zeroer( int n , int a[] ) {

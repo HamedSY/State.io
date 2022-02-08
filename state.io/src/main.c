@@ -31,7 +31,7 @@ int main() {
 	SCREEN_WIDTH , SCREEN_HEIGHT , SDL_WINDOW_OPENGL );
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	//fonts
-	TTF_Font *LiberationReg15 = TTF_OpenFont("fonts/LiberationSerif-Regular.ttf" , 15);
+	TTF_Font *funtasia15 = TTF_OpenFont("fonts/Funtasia.otf" , 15);
 	TTF_Font *funtasia50 = TTF_OpenFont("fonts/Funtasia.otf" , 50);
 	TTF_Font *funtasia70 = TTF_OpenFont("fonts/Funtasia.otf" , 70);
 	TTF_Font *funtasia40 = TTF_OpenFont("fonts/Funtasia.otf" , 40);
@@ -113,7 +113,7 @@ int main() {
 // MENU
 
 	// menu title
-	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title2.png");
+	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title.png");
 	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
 	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 260; menuTitleImgRect.y = 20;
 	SDL_QueryTexture( menuTitleImgTexture , NULL , NULL , &menuTitleImgRect.w , &menuTitleImgRect.h );
@@ -189,14 +189,13 @@ int main() {
 	n = initializingCities();
 
 	// background of map image
-	SDL_Surface *mapBackImgSurface = IMG_Load("images/back.jpg");
-	SDL_Texture *mapBackImgTexture = SDL_CreateTextureFromSurface(myRenderer , mapBackImgSurface);
+	SDL_Texture *mapBackImgTexture = IMG_LoadTexture( myRenderer , "images/back.jpg");
 
 	// soldiers' numbers text
 	SDL_Surface *solNumSurface[4][6];
 	SDL_Texture *solNumTexture[4][6];
 	SDL_Rect textRect[4][6];
-	for(int i = 0; i < 4; i++) {
+	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < n; j++) {
 			textRect[i][j].x = ((cities[i][j].x1 + cities[i][j].x2) / 2) - (CENTER_R / 2);
 			textRect[i][j].y = ((cities[i][j].y1 + cities[i][j].y2) / 2) - (CENTER_R / 2);
@@ -208,10 +207,10 @@ int main() {
 	// game loop
 	while( 1 ) {
 
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				sprintf( solNumStr , "%d" , cities[i][j].soldiers_num );
-				solNumSurface[i][j] = TTF_RenderText_Solid( LiberationReg15 , solNumStr , WHITE );
+				solNumSurface[i][j] = TTF_RenderText_Blended( funtasia15 , solNumStr , BLACK );
 				solNumTexture[i][j] = SDL_CreateTextureFromSurface( myRenderer , solNumSurface[i][j] );
 				SDL_QueryTexture( solNumTexture[i][j] , NULL , NULL , &textRect[i][j].w , &textRect[i][j].h );
 			}
@@ -222,7 +221,7 @@ int main() {
 
 		SDL_RenderCopy( myRenderer , mapBackImgTexture , NULL , NULL );
 		printMap( myRenderer , n );
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				SDL_RenderCopy( myRenderer , solNumTexture[i][j] , NULL , &textRect[i][j] );
 			}
@@ -264,10 +263,13 @@ int main() {
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
 
-		for(int i = 0; i < 4; i++) {
+		int counter = 0;
+		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				SDL_DestroyTexture( solNumTexture[i][j] );
+				SDL_DestroyTexture( planetsTexture[counter] );
 				SDL_FreeSurface( solNumSurface[i][j] );
+				counter++;
 			}
 		}
 
@@ -283,7 +285,7 @@ int main() {
 	SDL_DestroyRenderer( myRenderer );
 
     SDL_DestroyTexture( mapBackImgTexture );
-	SDL_FreeSurface( mapBackImgSurface );
+	// SDL_FreeSurface( mapBackImgSurface );
 	
 	SDL_Quit();
 	IMG_Quit();
