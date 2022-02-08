@@ -57,7 +57,7 @@ int loginEventHandling( SDL_Renderer *rend ) {
 
 void usernameInputBox( SDL_Renderer *rend ) {
     roundedBoxColor( rend , 250 , 250 , 750 , 400 , 10 , 0xdfffffff );
-    roundedBoxRGBA( rend , 400 , 450 , 600 , 520 , 10 , 0 , 103 , 217 , 255 );
+    roundedBoxRGBA( rend , 400 , 450 , 600 , 520 , 10 , GREEN.r , GREEN.g , GREEN.b , 255 );
 }
 
 

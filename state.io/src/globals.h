@@ -35,10 +35,13 @@ SDL_Color LIGHT_BLUE = { 0 , 103 , 217 , 255 };
 SDL_Color DARK_BLUE = { 0 , 24 , 168 , 255 };
 SDL_Color LIGHT_PURPLE = { 149 , 50 , 170 , 255 };
 SDL_Color DARK_PURPLE = { 81 , 40 , 136 , 255 };
+SDL_Color GREEN = { 30 , 140 , 50 , 255 };
 
 int mei , mej , enemyi , enemyj , desti , destj;
 int mouseOnMe = 0 , isSendingSoldiers = 0 , AIisSendingSoldiers = 0;
-int isHovernewGame = 0 , isHoverContinue = 0 , isTyping = 0 , isHoverLoadGame = 0 , isHoverScoreBoard = 0;
+int isHovernewGame = 0 , isHoverContinue = 0 , isTyping = 0 , isHoverLoadGame = 0 , isHoverScoreBoard = 0 ,
+isHoverMedium = 0 , isHoverHard = 0 , isHoverGal1 = 0 , isHoverGal2 = 0 , isHoverGal3 = 0 , isHoverCon = 0;
+int diff = 0 , gal = 0;
 int end = 0;
 int n , temp , temp2 , frame = 1;
 int myflag[200] = {0} , AIflag[200] = {0} , myflag2[200] = {0} , 
@@ -47,6 +50,9 @@ int hitcounter = 0 , AIhitcounter = 0;
 int inputLoc = 0;
 double velocity = 3;
 char solNumStr[10] = {0} , username[30] = {};
+int transCh = 200;
+int ringedPlanets[9] = { 1 , 3 , 5 , 7 , 8 , 9 , 10 , 15 , 16 };
+int ringlessPlanets[9] = { 2 , 4 , 6 , 11 , 12 , 13 , 14 , 17 , 18 };
 
 City cities[4][6];
 

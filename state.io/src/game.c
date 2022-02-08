@@ -166,7 +166,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 
 				if( begin.x > dest.x ) {
 					if( soldier[k].x > dest.x ) {
-						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R + 2 , 0xffffffff );
+						filledCircleRGBA( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 243 , 34 , 34 , 255 );
 						if( !myflag2[k] ) {
 							cities[mei][mej].soldiers_num--;
 							myflag2[k] = 1;
@@ -177,7 +178,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 				
 				else if( begin.x < dest.x ) {
 					if( soldier[k].x < dest.x ) {
-						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+						filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R + 2 , 0xffffffff );
+						filledCircleRGBA( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 243 , 34 , 34 , 255 );
 						if( !myflag2[k] ) {
 							cities[mei][mej].soldiers_num--;
 							myflag2[k] = 1;
@@ -189,7 +191,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 
 					if( begin.y < dest.y ) {
 						if( soldier[k].y < dest.y ) {
-							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R + 2 , 0xffffffff );
+							filledCircleRGBA( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 243 , 34 , 34 , 255 );
 							if( !myflag2[k] ) {
 								cities[mei][mej].soldiers_num--;
 								myflag2[k] = 1;
@@ -199,7 +202,8 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 
 					else if( begin.y > dest.y ) {
 						if( soldier[k].y > dest.y ) {
-							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 0xffffffff );
+							filledCircleColor( rend , soldier[k].x , soldier[k].y , SOLDIER_R + 2 , 0xffffffff );
+							filledCircleRGBA( rend , soldier[k].x , soldier[k].y , SOLDIER_R , 243 , 34 , 34 , 255 );
 							if( !myflag2[k] ) {
 								cities[mei][mej].soldiers_num--;
 								myflag2[k] = 1;
@@ -294,7 +298,7 @@ int checkTheEnd() {
 
 
 int initializingCities() {
-	int n = 4 + (rand() % 2);
+	int n = 3 + diff;
 	int color = 0xff000000;
 	
 	for(int i = 0; i < 3; i++) {
@@ -312,7 +316,13 @@ int initializingCities() {
 
 			cities[i][j].soldiers_num = 10;
 			cities[i][j].isSendingSol = 0;
-			cities[i][j].number = ( rand() % 18 ) + 1;
+			if( gal == 3 )
+				cities[i][j].number = ( rand() % 18 ) + 1;
+			else if( gal == 2 ) 
+				cities[i][j].number = ringedPlanets[ rand() % 9 ];
+			else if( gal == 1 )
+				cities[i][j].number = ringlessPlanets[ rand() % 9 ];
+
 
 			planetsRect[i][j].x = cities[i][j].x1;
 			planetsRect[i][j].y = cities[i][j].y1;

@@ -7,9 +7,10 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "globals.h"
-#include "game.c"
-#include "menu.c"
 #include "login.c"
+#include "menu.c"
+#include "map_choosing.c"
+#include "game.c"
 #include "ai.c"
 
 
@@ -27,14 +28,15 @@ int main() {
 	}
 
 	// window , renderer 
-	SDL_Window *myWindow = SDL_CreateWindow( "State.hm" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 
+	SDL_Window *myWindow = SDL_CreateWindow( "Planet.hm" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , 
 	SCREEN_WIDTH , SCREEN_HEIGHT , SDL_WINDOW_OPENGL );
 	SDL_Renderer *myRenderer = SDL_CreateRenderer( myWindow , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 	//fonts
-	TTF_Font *funtasia15 = TTF_OpenFont("fonts/Funtasia.otf" , 15);
+	TTF_Font *funtasia20 = TTF_OpenFont("fonts/Funtasia.otf" , 20);
+	TTF_Font *funtasia30 = TTF_OpenFont("fonts/Funtasia.otf" , 30);
+	TTF_Font *funtasia40 = TTF_OpenFont("fonts/Funtasia.otf" , 40);
 	TTF_Font *funtasia50 = TTF_OpenFont("fonts/Funtasia.otf" , 50);
 	TTF_Font *funtasia70 = TTF_OpenFont("fonts/Funtasia.otf" , 70);
-	TTF_Font *funtasia40 = TTF_OpenFont("fonts/Funtasia.otf" , 40);
 
 	// menu background image
 	SDL_Surface *menuBackImgSurface = IMG_Load("images/back2.jpg");
@@ -103,10 +105,10 @@ int main() {
 
 	SDL_StopTextInput();
 	SDL_DestroyTexture( textInputTexture );
-	SDL_DestroyTexture( continueTexture );
+	// SDL_DestroyTexture( continueTexture );
 	SDL_DestroyTexture( enterUsernameTexture );
 	SDL_FreeSurface( textInputSurface );
-	SDL_FreeSurface( continueSurface );
+	// SDL_FreeSurface( continueSurface );
 	SDL_FreeSurface( enterUsernameSurface );
 	
 
@@ -181,6 +183,133 @@ int main() {
 
 
 // MAP CHOOSING
+	
+	SDL_Surface *chooseDiffSurface = TTF_RenderText_Blended( funtasia50 , "Choose A Difficulty Please" , ORANGE );
+	SDL_Texture *chooseDiffTexture = SDL_CreateTextureFromSurface ( myRenderer , chooseDiffSurface );
+	SDL_Rect chooseDiffRect; chooseDiffRect.x = 260; chooseDiffRect.y = 20;
+	SDL_QueryTexture( chooseDiffTexture , NULL , NULL , &chooseDiffRect.w , &chooseDiffRect.h );
+
+	SDL_Surface *chooseMapSurface = TTF_RenderText_Blended( funtasia50 , "Choose A Galaxy Please" , ORANGE );
+	SDL_Texture *chooseMapTexture = SDL_CreateTextureFromSurface ( myRenderer , chooseMapSurface );
+	SDL_Rect chooseMapRect; chooseMapRect.x = 290; chooseMapRect.y = 190;
+	SDL_QueryTexture( chooseMapTexture , NULL , NULL , &chooseMapRect.w , &chooseMapRect.h );
+
+	SDL_Surface *mediumSurface = TTF_RenderText_Blended( funtasia30 , "Medium" , WHITE );
+	SDL_Texture *mediumTexture = SDL_CreateTextureFromSurface ( myRenderer , mediumSurface );
+	SDL_Rect mediumRect; mediumRect.x = 280; mediumRect.y = 110;
+	SDL_QueryTexture( mediumTexture , NULL , NULL , &mediumRect.w , &mediumRect.h );
+
+	SDL_Surface *mediumExSurface = TTF_RenderText_Blended( funtasia20 , "The Galaxy Has 12 Planets" , WHITE );
+	SDL_Texture *mediumExTexture = SDL_CreateTextureFromSurface ( myRenderer , mediumExSurface );
+	SDL_Rect mediumExRect; mediumExRect.x = 235; mediumExRect.y = 145;
+	SDL_QueryTexture( mediumExTexture , NULL , NULL , &mediumExRect.w , &mediumExRect.h );
+
+	SDL_Surface *hardSurface = TTF_RenderText_Blended( funtasia30 , "Hard" , WHITE );
+	SDL_Texture *hardTexture = SDL_CreateTextureFromSurface ( myRenderer , hardSurface );
+	SDL_Rect hardRect; hardRect.x = 650; hardRect.y = 110;
+	SDL_QueryTexture( hardTexture , NULL , NULL , &hardRect.w , &hardRect.h );
+
+	SDL_Surface *hardExSurface = TTF_RenderText_Blended( funtasia20 , "The Galaxy Has 15 Planets" , WHITE );
+	SDL_Texture *hardExTexture = SDL_CreateTextureFromSurface ( myRenderer , hardExSurface );
+	SDL_Rect hardExRect; hardExRect.x = 590; hardExRect.y = 145;
+	SDL_QueryTexture( hardExTexture , NULL , NULL , &hardExRect.w , &hardExRect.h );
+
+	SDL_Surface *ringedGalSurface = TTF_RenderText_Blended( funtasia30 , "Ringed Galaxy" , WHITE );
+	SDL_Texture *ringedGalTexture = SDL_CreateTextureFromSurface ( myRenderer , ringedGalSurface );
+	SDL_Rect ringedGalRect; ringedGalRect.x = 430; ringedGalRect.y = 455;
+	SDL_QueryTexture( ringedGalTexture , NULL , NULL , &ringedGalRect.w , &ringedGalRect.h );
+
+	SDL_Surface *ringlessGalSurface = TTF_RenderText_Blended( funtasia30 , "Ringless Galaxy" , WHITE );
+	SDL_Texture *ringlessGalTexture = SDL_CreateTextureFromSurface ( myRenderer , ringlessGalSurface );
+	SDL_Rect ringlessGalRect; ringlessGalRect.x = 100; ringlessGalRect.y = 455;
+	SDL_QueryTexture( ringlessGalTexture , NULL , NULL , &ringlessGalRect.w , &ringlessGalRect.h );
+
+	SDL_Surface *randomSurface = TTF_RenderText_Blended( funtasia30 , "Random" , WHITE );
+	SDL_Texture *randomTexture = SDL_CreateTextureFromSurface ( myRenderer , randomSurface );
+	SDL_Rect random2Rect; random2Rect.x = 780; random2Rect.y = 455;
+	SDL_QueryTexture( randomTexture , NULL , NULL , &random2Rect.w , &random2Rect.h );
+
+
+	SDL_Texture *ringGal = IMG_LoadTexture( myRenderer , "images/ring.png" );
+	SDL_Texture *ringlessGal = IMG_LoadTexture( myRenderer , "images/ringless.jpg" );
+	SDL_Texture *random = IMG_LoadTexture( myRenderer , "images/random.png" );
+	SDL_Rect ringlessRect; ringlessRect.x = 50; ringlessRect.y = 280; ringlessRect.w = 260; ringlessRect.h = 170;
+	SDL_Rect ringRect; ringRect.x = 370; ringRect.y = 280; ringRect.w = 260; ringRect.h = 170;
+	SDL_Rect randomRect; randomRect.x = 710; randomRect.y = 280; randomRect.w = 230; randomRect.h = 160;
+
+	continueRect.y = 530;
+
+
+	// map choosing loop
+	while( 1 ) {
+		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
+		SDL_RenderClear( myRenderer );
+
+		SDL_RenderCopy( myRenderer , menuBackImgTexture , NULL , NULL );
+		SDL_RenderCopy( myRenderer , chooseMapTexture , NULL , &chooseMapRect );
+		SDL_RenderCopy( myRenderer , chooseDiffTexture , NULL , &chooseDiffRect );
+		drawChossingBoxes( myRenderer );
+		SDL_RenderCopy( myRenderer , mediumTexture , NULL , &mediumRect );
+		SDL_RenderCopy( myRenderer , hardTexture , NULL , &hardRect );
+		SDL_RenderCopy ( myRenderer , ringlessGal , NULL , &ringlessRect );
+		SDL_RenderCopy ( myRenderer , ringGal , NULL , &ringRect );
+		SDL_RenderCopy ( myRenderer , random , NULL , &randomRect );
+		SDL_RenderCopy ( myRenderer , continueTexture , NULL , &continueRect );
+		SDL_RenderCopy ( myRenderer , ringedGalTexture , NULL , &ringedGalRect );
+		SDL_RenderCopy ( myRenderer , ringlessGalTexture , NULL , &ringlessGalRect );
+		SDL_RenderCopy ( myRenderer , randomTexture , NULL , &random2Rect );
+		SDL_RenderCopy ( myRenderer , mediumExTexture , NULL , &mediumExRect );
+		SDL_RenderCopy ( myRenderer , hardExTexture , NULL , &hardExRect );
+		
+		
+
+		// event handling
+		int event = mapChoosingEventHandling( myRenderer );
+		if( event == 0 )
+			return 0;
+		else if( event == 1 )
+			break;
+		else if( isHoverMedium ) 
+			roundedBoxColor( myRenderer , 200 , 100 , 450 , 170 , 10 , 0x2cffffff );
+		else if( isHoverHard )
+			roundedBoxColor( myRenderer , 550 , 100 , 800 , 170 , 10 , 0x2cffffff );
+		else if( isHoverGal1 )
+			roundedBoxColor( myRenderer , 40 , 270 , 320 , 500 , 10 , 0x11ffffff );
+		else if( isHoverGal2 )
+			roundedBoxColor( myRenderer , 360 , 270 , 640 , 500 , 10 , 0x11ffffff );
+		else if( isHoverGal3 )
+			roundedBoxColor( myRenderer , 680 , 270 , 960 , 500 , 10 , 0x11ffffff );
+		else if( isHoverCon )
+			roundedBoxColor( myRenderer , 400 , 525 , 600 , 580 , 10 , 0x2cffffff );
+		
+
+		SDL_RenderPresent( myRenderer );
+		SDL_Delay( 1000 / FPS );
+		SDL_RenderClear( myRenderer );
+	}
+
+	SDL_DestroyTexture( ringGal );
+	SDL_DestroyTexture( ringlessGal );
+	SDL_DestroyTexture( random );
+	SDL_DestroyTexture( chooseDiffTexture );
+	SDL_DestroyTexture( chooseMapTexture );
+	SDL_DestroyTexture( mediumExTexture );
+	SDL_DestroyTexture( hardExTexture );
+	SDL_DestroyTexture( ringedGalTexture );
+	SDL_DestroyTexture( ringlessGalTexture );
+	SDL_DestroyTexture( randomTexture );
+	SDL_DestroyTexture( continueTexture );
+
+	SDL_FreeSurface( chooseDiffSurface );
+	SDL_FreeSurface( chooseMapSurface );
+	SDL_FreeSurface( mediumExSurface );
+	SDL_FreeSurface( hardExSurface );
+	SDL_FreeSurface( ringedGalSurface );
+	SDL_FreeSurface( ringlessGalSurface );
+	SDL_FreeSurface( randomSurface );
+	SDL_FreeSurface( continueSurface );
+
+
 
 
 
@@ -207,14 +336,7 @@ int main() {
 	// game loop
 	while( 1 ) {
 
-		for(int i = 0; i < 3; i++) {
-			for(int j = 0; j < n; j++) {
-				sprintf( solNumStr , "%d" , cities[i][j].soldiers_num );
-				solNumSurface[i][j] = TTF_RenderText_Blended( funtasia15 , solNumStr , BLACK );
-				solNumTexture[i][j] = SDL_CreateTextureFromSurface( myRenderer , solNumSurface[i][j] );
-				SDL_QueryTexture( solNumTexture[i][j] , NULL , NULL , &textRect[i][j].w , &textRect[i][j].h );
-			}
-		}
+		
 		
 		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
 		SDL_RenderClear( myRenderer );
@@ -223,6 +345,12 @@ int main() {
 		printMap( myRenderer , n );
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
+				sprintf( solNumStr , "%d" , cities[i][j].soldiers_num );
+				solNumSurface[i][j] = TTF_RenderText_Blended( funtasia20 , solNumStr , BLACK );
+				solNumTexture[i][j] = SDL_CreateTextureFromSurface( myRenderer , solNumSurface[i][j] );
+				SDL_QueryTexture( solNumTexture[i][j] , NULL , NULL , &textRect[i][j].w , &textRect[i][j].h );
+				filledCircleColor( myRenderer , (cities[i][j].x1 + cities[i][j].x2) / 2 ,
+				((cities[i][j].y1 + cities[i][j].y2) / 2) + (CENTER_R / 2) , CENTER_R , 0x6cffffff );
 				SDL_RenderCopy( myRenderer , solNumTexture[i][j] , NULL , &textRect[i][j] );
 			}
 		}

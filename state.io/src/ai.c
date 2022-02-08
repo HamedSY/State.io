@@ -17,7 +17,8 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
 
             if( begin2.x > dest2.x ) {
                 if( soldier2[k].x > dest2.x ) {
-                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R + 2 , 0xffffffff );
+                    filledCircleRGBA( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 248 , 248 , 37 , 255 );
                     if( !AIflag2[k] ) {
                         cities[enemyi][enemyj].soldiers_num--;
                         AIflag2[k] = 1;
@@ -28,7 +29,8 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
             
             else if( begin2.x < dest2.x ) {
                 if( soldier2[k].x < dest2.x ) {
-                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                    filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R + 2 , 0xffffffff );
+                    filledCircleRGBA( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 248 , 248 , 37 , 255 );
                     if( !AIflag2[k] ) {
                         cities[enemyi][enemyj].soldiers_num--;
                         AIflag2[k] = 1;
@@ -40,7 +42,8 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
 
                 if( begin2.y < dest2.y ) {
                     if( soldier2[k].y < dest2.y ) {
-                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R + 2 , 0xffffffff );
+                        filledCircleRGBA( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 248 , 248 , 37 , 255 );
                         if( !AIflag2[k] ) {
                             cities[enemyi][enemyj].soldiers_num--;
                             AIflag2[k] = 1;
@@ -50,7 +53,8 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
 
                 else if( begin2.y > dest2.y ) {
                     if( soldier2[k].y > dest2.y ) {
-                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 0xffffffff );
+                        filledCircleColor( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R + 2 , 0xffffffff );
+                        filledCircleRGBA( rend , soldier2[k].x , soldier2[k].y , SOLDIER_R , 248 , 248 , 37 , 255 );
                         if( !AIflag2[k] ) {
                             cities[enemyi][enemyj].soldiers_num--;
                             AIflag2[k] = 1;
