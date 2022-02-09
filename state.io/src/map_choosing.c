@@ -78,6 +78,16 @@ int mapChoosingEventHandling( SDL_Renderer *rend ) {
 		else 
 			isHoverCon = 0;
 
+		
+		if( abs( mouse.x - 50 ) < 30 && abs( mouse.y - 530 ) < 30 ) {
+			isHoverBack = 1;
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				return 2;
+			}
+		}
+		else 
+			isHoverBack = 0;
+
 
 
 

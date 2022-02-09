@@ -36,6 +36,7 @@ int menuEventHandling( SDL_Renderer *rend ) {
 		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 365 && mouse.y < 445 ) {
 			isHoverLoadGame = 1;
 			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				// printf("salam");
 				return 2;
 			}
 		}
@@ -51,14 +52,90 @@ int menuEventHandling( SDL_Renderer *rend ) {
 		}
 		else 
 			isHoverScoreBoard = 0;
+
+
+		if( abs( mouse.x - 50 ) < 30 && abs( mouse.y - 550 ) < 30 ) {
+			isHoverBack = 1;
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				return 4;
+			}
+		}
+		else 
+			isHoverBack = 0;
+
+
     }
     return -1;
 }
 
 
+int leaderboardEventHandling() {
+	SDL_Event ev;
+	while (SDL_PollEvent(&ev)) {
+		mouse.x = ev.button.x;
+		mouse.y = ev.button.y;
+
+		if( ev.type == SDL_QUIT ) 
+			return 0; // Quit
+		
+		if( abs( mouse.x - 50 ) < 30 && abs( mouse.y - 550 ) < 30 ) {
+			isHoverBack = 1;
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+				return 1;
+			}
+		}
+		else 
+			isHoverBack = 0;
+
+
+	}
+	return -1;
+}
+
+void sortScores() {
+
+	int i = 0;
+	char tmp[30];
+	FILE *scores = fopen( "scores.txt" , "r" );
+
+	while( !feof( scores ) ) {
+		fscanf( scores , "%d %[^\n]s\n" , &sortedScores[i] , sortedNames[i] );
+		// printf("%s : %d\n" , sortedNames[i] , sortedScores[i]);
+		i++;
+	}
+	// printf("%d\n" , i);
+
+	for( int j = 0; j < i - 2; j++ ) {
+		for( int k = j + 1; k < i - 1; k++ ) {
+			if( sortedScores[j] < sortedScores[k] ) {
+				int temp3 = sortedScores[j];
+				sortedScores[j] = sortedScores[k];
+				sortedScores[k] = temp3;
+				
+				tmp[0] = '\0';
+				strcpy( tmp , sortedNames[j] );
+				strcpy( sortedNames[j] , sortedNames[k] );
+				strcpy( sortedNames[k] , tmp );
+			}
+		}
+	}
+
+	// for( int j = 0; j < i - 1; j++ ) {
+	// 	printf("%s : %d\n" , sortedNames[j] , sortedScores[j]);
+	// }
+
+	fclose( scores );
+}
+
+
 void loadTheGame() {
 	
-	FILE *gameDetails = fopen( "savings/game_details.txt" , "r" );
+	// printf("%s" , username);
+	char filename[50] = {0};
+	strcat( filename , "savings/" );
+	strcat( filename , username );
+	strcat( filename , ".txt" );
+	FILE *gameDetails = fopen ( filename , "r" );
 
 	fscanf( gameDetails , "%d\n" , &n );
 	for(int i = 0; i < 3; i++) {
@@ -94,12 +171,14 @@ void globalsInit() {
 	DARK_BLUE = (SDL_Color){ 0 , 24 , 168 , 255 };
 	LIGHT_PURPLE = (SDL_Color){ 149 , 50 , 170 , 255 };
 	DARK_PURPLE = (SDL_Color){ 81 , 40 , 136 , 255 };
-	GREEN = (SDL_Color){ 30 , 140 , 50 , 255 };
+	GREEN = (SDL_Color){ 50 , 160 , 70 , 255 };
+	RED = (SDL_Color){237 , 31 , 31 , 255};
 
 	mouseOnMe = 0 ; isSendingSoldiers = 0 ; AIisSendingSoldiers = 0;
 	isHovernewGame = 0 ; isHoverContinue = 0 ; isTyping = 0 ; isHoverLoadGame = 0 ; isHoverScoreBoard = 0 ;
 	isHoverMedium = 0 ; isHoverHard = 0 ; isHoverGal1 = 0 ; isHoverGal2 = 0 ; isHoverGal3 = 0 ; isHoverCon = 0;
-	diff = 0 ; gal = 0; end = 0; loading = 0;
+	isHoverReturn = 0; isHoverQuit = 0; isHoverBack = 0;
+	diff = 0 ; gal = 0; end = 0; loading = 0; update = 0; scoreboard = 0;
 	hitcounter = 0 ; AIhitcounter = 0; inputLoc = 0;
 	frame = 1;
 	velocity = 3;

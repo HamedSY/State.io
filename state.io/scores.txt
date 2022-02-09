@@ -1,0 +1,4 @@
+60 mohammad
+30 hamed
+90 saleh
+180 ali

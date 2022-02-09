@@ -59,5 +59,25 @@ void usernameInputBox( SDL_Renderer *rend ) {
 }
 
 
+void saveUsername() {
+	int t , flag = 0;
+	char name[30];
+	FILE *scores = fopen( "scores.txt" , "r+" );
+
+	while( !feof( scores ) ) {
+		fscanf( scores , "%d %[^\n]s" , &t , name );
+		if( !strcmp( username , name ) ){
+			flag = 1;
+			break;
+		}
+	}
+	if( !flag ) {
+		fprintf( scores , "%d %s\n" , 0 , username );
+	}
+
+	fclose( scores );
+}
+
+
 
 #endif

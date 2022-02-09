@@ -35,13 +35,15 @@ SDL_Color DARK_BLUE;
 SDL_Color LIGHT_PURPLE;
 SDL_Color DARK_PURPLE;
 SDL_Color GREEN;
+SDL_Color RED;
 
 int mei , mej , enemyi , enemyj , desti , destj;
 int mouseOnMe , isSendingSoldiers , AIisSendingSoldiers;
 int isHovernewGame , isHoverContinue , isTyping , isHoverLoadGame , isHoverScoreBoard ,
-isHoverMedium , isHoverHard , isHoverGal1 , isHoverGal2 , isHoverGal3 , isHoverCon;
+isHoverMedium , isHoverHard , isHoverGal1 , isHoverGal2 , isHoverGal3 , isHoverCon , 
+isHoverReturn , isHoverQuit , isHoverBack;
 int diff , gal;
-int end , loading;
+int end , loading , update , scoreboard;
 int n , temp , temp2 , frame;
 int myflag[200] , AIflag[200] , myflag2[200] , 
 AIflag2[200] , hitflag[200] , AIhitflag[200];
@@ -50,9 +52,9 @@ int inputLoc;
 double velocity;
 char solNumStr[10] , username[30];
 int ringedPlanets[9];
-//  = { 1 , 3 , 5 , 7 , 8 , 9 , 10 , 15 , 16 };
 int ringlessPlanets[9];
-//  = { 2 , 4 , 6 , 11 , 12 , 13 , 14 , 17 , 18 };
+int sortedScores[500];
+char sortedNames[500][30];
 
 City cities[4][6];
 
@@ -69,23 +71,27 @@ void AIsendingSoldiers( SDL_Renderer *rend );
 
 int gameEventHandling( SDL_Renderer *rend );
 int initializingCities();
-void print2DCity( int a , int b , City arr[a][b] );
 void printMap( SDL_Renderer* rend , int n );
 void sendingSoldiers( SDL_Renderer *rend );
 void solNumIncreasing();
 int checkTheEnd();
 void saveTheGame();
+void updateScores();
+void drawEndingBoxes( SDL_Renderer *rend );
 void coordZeroer( int n , Coordination a[] );
 void zeroer( int n , int a[] );
 
 int loginEventHandling( SDL_Renderer *rend );
 void usernameInputBox( SDL_Renderer *rend );
-void globalsInit();
+void saveUsername();
 
 int menuEventHandling( SDL_Renderer *rend );
 void loadTheGame();
 void drawMenuBoxes( SDL_Renderer *rend );
+void globalsInit();
 void drawBox( SDL_Renderer *rend );
+int leaderboardEventHandling();
+void sortScores();
 
 int mapChoosingEventHandling( SDL_Renderer *rend );
 void drawChoosingBoxes( SDL_Renderer *rend );

@@ -1,5 +1,5 @@
-#ifndef __MAP_C__
-#define __MAP_C__
+#ifndef __GAME_C__
+#define __GAME_C__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,7 +61,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			do {
 				desti = rand() % 3;
 				destj = rand() % n;
-			} while( ( desti == enemyi && destj == enemyj ) || ( cities[desti][destj].soldiers_num > 40 && cities[desti][destj].flag == 2 )
+			} while( ( desti == enemyi && destj == enemyj ) || ( cities[desti][destj].flag == 2 )
 				  || ( cities[desti][destj].flag == 2 ) || ( cities[desti][destj].soldiers_num >= cities[enemyi][enemyj].soldiers_num ) );
 
 			dest2.x = ( cities[desti][destj].x1 + cities[desti][destj].x2 ) / 2;
@@ -78,66 +78,93 @@ int gameEventHandling( SDL_Renderer *rend ) {
 		if( ev.type == SDL_QUIT ) 
 			return 0; // Quit
 
-		if( ev.type == SDL_MOUSEBUTTONUP ) {
-			
-			if( !isSendingSoldiers && mouseOnMe &&
-			!( mouse.x > cities[mei][mej].x1 && mouse.x < cities[mei][mej].x2 &&
-			mouse.y > cities[mei][mej].y1 && mouse.y < cities[mei][mej].y2 ) ) {
+		if( !end ) {
+
+			if( ev.type == SDL_MOUSEBUTTONUP ) {
 				
-				for( int i = 0; i < 3; i++ ) {
-					for( int j = 0; j < n; j++ ) {
-						if( ev.button.x >= cities[i][j].x1 && ev.button.x <= cities[i][j].x2  &&  
-						ev.button.y >= cities[i][j].y1 && ev.button.y <= cities[i][j].y2 ) {
-							correctAttack = 1;
-						}
-					}
-				}
-
-				if( correctAttack ) {
-
-					for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
-						soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
-						soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2);
-					}
-
-					begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
-					begin.y = (cities[mei][mej].y1 + cities[mei][mej].y2) / 2;
-
-					dest = mouse;
-
-					isSendingSoldiers = 1; 
-					temp = cities[mei][mej].soldiers_num;
-					zeroer( 200 , myflag );
-					zeroer( 200 , myflag2 );
-					zeroer( 200 , hitflag );
-
-				}
-			}
-			// else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
-			mouseOnMe = 0;
-		}
-		
-		if( ev.type == SDL_MOUSEBUTTONDOWN ) {
-			if(ev.button.button == SDL_BUTTON_LEFT ) {
-
-				for(int i = 0; i < 3; i++) {
-					for(int j = 0; j < n; j++) {
-						if(cities[i][j].flag == 1) {
-							mei = i; mej = j;
-							if( ev.button.x >= cities[mei][mej].x1 && ev.button.x <= cities[mei][mej].x2  &&  
-							ev.button.y >= cities[mei][mej].y1 && ev.button.y <= cities[mei][mej].y2 ) {
-								mouseOnMe = 1;
-								break;
+				if( !isSendingSoldiers && mouseOnMe &&
+				!( mouse.x > cities[mei][mej].x1 && mouse.x < cities[mei][mej].x2 &&
+				mouse.y > cities[mei][mej].y1 && mouse.y < cities[mei][mej].y2 ) ) {
+					
+					for( int i = 0; i < 3; i++ ) {
+						for( int j = 0; j < n; j++ ) {
+							if( ev.button.x >= cities[i][j].x1 && ev.button.x <= cities[i][j].x2  &&  
+							ev.button.y >= cities[i][j].y1 && ev.button.y <= cities[i][j].y2 ) {
+								correctAttack = 1;
 							}
 						}
 					}
-					if( mouseOnMe ) break;
+
+					if( correctAttack ) {
+
+						for(int i = 0; i < cities[mei][mej].soldiers_num; i++) {
+							soldier[i].x = ((cities[mei][mej].x1 + cities[mei][mej].x2) / 2);
+							soldier[i].y = ((cities[mei][mej].y1 + cities[mei][mej].y2) / 2);
+						}
+
+						begin.x = (cities[mei][mej].x1 + cities[mei][mej].x2) / 2;
+						begin.y = (cities[mei][mej].y1 + cities[mei][mej].y2) / 2;
+
+						dest = mouse;
+
+						isSendingSoldiers = 1; 
+						temp = cities[mei][mej].soldiers_num;
+						zeroer( 200 , myflag );
+						zeroer( 200 , myflag2 );
+						zeroer( 200 , hitflag );
+
+					}
 				}
-						
+				// else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
+				mouseOnMe = 0;
 			}
+			
+			if( ev.type == SDL_MOUSEBUTTONDOWN ) {
+				if(ev.button.button == SDL_BUTTON_LEFT ) {
+
+					for(int i = 0; i < 3; i++) {
+						for(int j = 0; j < n; j++) {
+							if(cities[i][j].flag == 1) {
+								mei = i; mej = j;
+								if( ev.button.x >= cities[mei][mej].x1 && ev.button.x <= cities[mei][mej].x2  &&  
+								ev.button.y >= cities[mei][mej].y1 && ev.button.y <= cities[mei][mej].y2 ) {
+									mouseOnMe = 1;
+									break;
+								}
+							}
+						}
+						if( mouseOnMe ) break;
+					}
+							
+				}
+			}
+
+		}
+
+		else if ( end ) {
+
+			if( mouse.x > 200 && mouse.x < 500 && mouse.y > 350 && mouse.y < 440 ) {
+				isHoverReturn = 1;
+				if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+					return 1;
+				}
+			}
+			else 
+				isHoverReturn = 0;
+
+
+			if( mouse.x > 600 && mouse.x < 800 && mouse.y > 350 && mouse.y < 440 ) {
+				isHoverQuit = 1;
+				if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
+					return 2;
+				}
+			}
+			else 
+				isHoverQuit = 0;
+
 		}
 	}
-	return 1;
+	return -1;
 }
 
 
@@ -295,17 +322,28 @@ int checkTheEnd() {
 						}
 					}
 				}
-				return 1;
+				return cities[i][j].flag;
 			}
 		}
 	}			
-	return -1;
+	return 0;
+}
+
+
+void drawEndingBoxes( SDL_Renderer *rend ) {
+	roundedBoxRGBA( rend , 200 , 350 , 500 , 440 , 10 , LIGHT_BLUE.r , LIGHT_BLUE.g , LIGHT_BLUE.b , LIGHT_BLUE.a );
+	roundedBoxRGBA( rend , 600 , 350 , 800 , 440 , 10 , RED.r , RED.g , RED.b , RED.a );
 }
 
 
 void saveTheGame() {
 
-	FILE *gameDetails = fopen ( "savings/game_details.txt" , "w" );
+	char filename[50] = {0};
+	strcat( filename , "savings/" );
+	strcat( filename , username );
+	strcat( filename , ".txt" );
+	// printf("%s" , filename);
+	FILE *gameDetails = fopen ( filename , "w" );
 
 	fprintf( gameDetails , "%d\n" , n );
 	for(int i = 0; i < 3; i++) {
@@ -315,6 +353,39 @@ void saveTheGame() {
 		}
 	}
 	fclose( gameDetails );
+}
+
+
+void updateScores() {
+	int s;
+	char name[50] , te[50];
+	
+	FILE *scores , *ftmp;
+	scores = fopen( "scores.txt" , "r" );
+	ftmp = fopen( "tmp.txt" , "w" );
+
+	while( !feof( scores ) ) {
+		
+		strcpy( te , name );
+		fscanf( scores , "%d %[^\n]s" , &s , name );
+		// printf( "%d %s\n" , s , name );
+
+		if( !strcmp( username , name ) ){
+			if( end == 1 ) 
+				s += 30;
+			else 
+				s -= 10;
+		}
+		
+		if( strcmp( name , te ) )
+			fprintf( ftmp , "%d %s\n" , s , name );
+	}
+
+	fclose( scores );
+	fclose( ftmp );
+
+	remove( "scores.txt" );
+	rename( "tmp.txt" , "scores.txt" );
 
 }
 
@@ -337,7 +408,7 @@ int initializingCities() {
 			else cities[i][j + 1].y1 = (rand() % 20) + 15;
 
 			cities[i][j].soldiers_num = 10;
-			// cities[i][j].isSendingSol = 0;
+			cities[i][j].flag = 0;
 			if( gal == 3 )
 				cities[i][j].number = ( rand() % 18 ) + 1;
 			else if( gal == 2 ) 
