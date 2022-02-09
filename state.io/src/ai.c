@@ -101,7 +101,7 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
             // printf("AI got 0\n");
             AIhitcounter = 0;
             coordZeroer( 200 , soldier2 );
-            cities[enemyi][enemyj].isSendingSol = 0;
+            // cities[enemyi][enemyj].isSendingSol = 0;
             // flag = 0;
         }
 

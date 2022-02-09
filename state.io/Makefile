@@ -123,6 +123,87 @@ state/fast:
 	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/build
 .PHONY : state/fast
 
+src/ai.o: src/ai.c.o
+
+.PHONY : src/ai.o
+
+# target to build an object file
+src/ai.c.o:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/ai.c.o
+.PHONY : src/ai.c.o
+
+src/ai.i: src/ai.c.i
+
+.PHONY : src/ai.i
+
+# target to preprocess a source file
+src/ai.c.i:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/ai.c.i
+.PHONY : src/ai.c.i
+
+src/ai.s: src/ai.c.s
+
+.PHONY : src/ai.s
+
+# target to generate assembly for a file
+src/ai.c.s:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/ai.c.s
+.PHONY : src/ai.c.s
+
+src/game.o: src/game.c.o
+
+.PHONY : src/game.o
+
+# target to build an object file
+src/game.c.o:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/game.c.o
+.PHONY : src/game.c.o
+
+src/game.i: src/game.c.i
+
+.PHONY : src/game.i
+
+# target to preprocess a source file
+src/game.c.i:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/game.c.i
+.PHONY : src/game.c.i
+
+src/game.s: src/game.c.s
+
+.PHONY : src/game.s
+
+# target to generate assembly for a file
+src/game.c.s:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/game.c.s
+.PHONY : src/game.c.s
+
+src/login.o: src/login.c.o
+
+.PHONY : src/login.o
+
+# target to build an object file
+src/login.c.o:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/login.c.o
+.PHONY : src/login.c.o
+
+src/login.i: src/login.c.i
+
+.PHONY : src/login.i
+
+# target to preprocess a source file
+src/login.c.i:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/login.c.i
+.PHONY : src/login.c.i
+
+src/login.s: src/login.c.s
+
+.PHONY : src/login.s
+
+# target to generate assembly for a file
+src/login.c.s:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/login.c.s
+.PHONY : src/login.c.s
+
 src/main.o: src/main.c.o
 
 .PHONY : src/main.o
@@ -150,6 +231,60 @@ src/main.c.s:
 	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/main.c.s
 .PHONY : src/main.c.s
 
+src/map_choosing.o: src/map_choosing.c.o
+
+.PHONY : src/map_choosing.o
+
+# target to build an object file
+src/map_choosing.c.o:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/map_choosing.c.o
+.PHONY : src/map_choosing.c.o
+
+src/map_choosing.i: src/map_choosing.c.i
+
+.PHONY : src/map_choosing.i
+
+# target to preprocess a source file
+src/map_choosing.c.i:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/map_choosing.c.i
+.PHONY : src/map_choosing.c.i
+
+src/map_choosing.s: src/map_choosing.c.s
+
+.PHONY : src/map_choosing.s
+
+# target to generate assembly for a file
+src/map_choosing.c.s:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/map_choosing.c.s
+.PHONY : src/map_choosing.c.s
+
+src/menu.o: src/menu.c.o
+
+.PHONY : src/menu.o
+
+# target to build an object file
+src/menu.c.o:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/menu.c.o
+.PHONY : src/menu.c.o
+
+src/menu.i: src/menu.c.i
+
+.PHONY : src/menu.i
+
+# target to preprocess a source file
+src/menu.c.i:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/menu.c.i
+.PHONY : src/menu.c.i
+
+src/menu.s: src/menu.c.s
+
+.PHONY : src/menu.s
+
+# target to generate assembly for a file
+src/menu.c.s:
+	$(MAKE) -f CMakeFiles/state.dir/build.make CMakeFiles/state.dir/src/menu.c.s
+.PHONY : src/menu.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -159,9 +294,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... state"
+	@echo "... src/ai.o"
+	@echo "... src/ai.i"
+	@echo "... src/ai.s"
+	@echo "... src/game.o"
+	@echo "... src/game.i"
+	@echo "... src/game.s"
+	@echo "... src/login.o"
+	@echo "... src/login.i"
+	@echo "... src/login.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/map_choosing.o"
+	@echo "... src/map_choosing.i"
+	@echo "... src/map_choosing.s"
+	@echo "... src/menu.o"
+	@echo "... src/menu.i"
+	@echo "... src/menu.s"
 .PHONY : help
 
 

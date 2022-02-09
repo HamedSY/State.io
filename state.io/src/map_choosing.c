@@ -7,11 +7,6 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "globals.h"
 
-int menuEventHandling( SDL_Renderer *rend );
-void drawChoosingBoxes( SDL_Renderer *rend );
-
-
-
 
 
 int mapChoosingEventHandling( SDL_Renderer *rend ) {
@@ -93,7 +88,7 @@ int mapChoosingEventHandling( SDL_Renderer *rend ) {
 }
 
 
-void drawChossingBoxes( SDL_Renderer *rend ) {
+void drawChoosingBoxes( SDL_Renderer *rend ) {
     SDL_Color mcolor = LIGHT_BLUE , hcolor = LIGHT_BLUE , color1 = LIGHT_BLUE , color2 = LIGHT_BLUE , color3 = LIGHT_BLUE;
 	
     if( diff == 1 )

@@ -5,17 +5,23 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
+#include <SDL2/SDL_image.h>
 #include "globals.h"
 
 
-int gameEventHandling( SDL_Renderer *rend );
-int initializingCities();
-void print2DCity( int a , int b , City arr[a][b] );
-void printMap( SDL_Renderer* rend , int n );
-void sendingSoldiers( SDL_Renderer *rend );
-void solNumIncreasing();
-int checkTheEnd();
 
+
+void zeroer( int n , int a[] ) {
+	for(int i = 0; i < n; i++)
+		a[i] = 0;
+}
+
+void coordZeroer( int n , Coordination a[] ) {
+	for(int i = 0; i < n; i++) {
+		a[i].x = 0;
+		a[i].y = 0;
+	}
+}
 
 int gameEventHandling( SDL_Renderer *rend ) {
 	SDL_Event ev;
@@ -39,7 +45,7 @@ int gameEventHandling( SDL_Renderer *rend ) {
 		if( flag ) {
 			AIisSendingSoldiers = 1;
 			// printf("AI got 1\n");
-			cities[enemyi][enemyj].isSendingSol = 1;
+			// cities[enemyi][enemyj].isSendingSol = 1;
 			zeroer( 200 , AIflag );
 			zeroer( 200 , AIflag2 );
 			zeroer( 200 , AIhitflag );
@@ -159,7 +165,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 	}
 
 	if(flag) {
-		cities[mei][mej].isSendingSol = 1;
+		// cities[mei][mej].isSendingSol = 1;
 		for(int k = 0; k < temp; k++) {
 
 			if( !hitflag[k] ) {
@@ -253,7 +259,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 				hitcounter = 0;
             	// soldier[ temp - 1 ].x = 0; soldier[ temp - 1 ].y = 0;
 				coordZeroer( 200 , soldier );
-				cities[mei][mej].isSendingSol = 0;
+				// cities[mei][mej].isSendingSol = 0;
 			}
 
 			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
@@ -297,6 +303,22 @@ int checkTheEnd() {
 }
 
 
+void saveTheGame() {
+
+	FILE *gameDetails = fopen ( "savings/game_details.txt" , "w" );
+
+	fprintf( gameDetails , "%d\n" , n );
+	for(int i = 0; i < 3; i++) {
+		for(int j = 0; j < n; j++) {
+			fprintf( gameDetails , "%d %d %d %d %d %d %d\n" , cities[i][j].x1 , cities[i][j].x2 , cities[i][j].y1 ,
+			cities[i][j].y2 , cities[i][j].flag , cities[i][j].soldiers_num , cities[i][j].number );
+		}
+	}
+	fclose( gameDetails );
+
+}
+
+
 int initializingCities() {
 	int n = 3 + diff;
 	int color = 0xff000000;
@@ -315,7 +337,7 @@ int initializingCities() {
 			else cities[i][j + 1].y1 = (rand() % 20) + 15;
 
 			cities[i][j].soldiers_num = 10;
-			cities[i][j].isSendingSol = 0;
+			// cities[i][j].isSendingSol = 0;
 			if( gal == 3 )
 				cities[i][j].number = ( rand() % 18 ) + 1;
 			else if( gal == 2 ) 

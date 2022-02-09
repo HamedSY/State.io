@@ -4,7 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/home/hamedsy/Desktop/mabani/state.io/src/ai.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/ai.c.o"
+  "/home/hamedsy/Desktop/mabani/state.io/src/game.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/game.c.o"
+  "/home/hamedsy/Desktop/mabani/state.io/src/login.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/login.c.o"
   "/home/hamedsy/Desktop/mabani/state.io/src/main.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/main.c.o"
+  "/home/hamedsy/Desktop/mabani/state.io/src/map_choosing.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/map_choosing.c.o"
+  "/home/hamedsy/Desktop/mabani/state.io/src/menu.c" "/home/hamedsy/Desktop/mabani/state.io/CMakeFiles/state.dir/src/menu.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

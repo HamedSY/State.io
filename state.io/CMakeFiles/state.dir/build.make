@@ -57,9 +57,48 @@ include CMakeFiles/state.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/state.dir/flags.make
 
+CMakeFiles/state.dir/src/ai.c.o: CMakeFiles/state.dir/flags.make
+CMakeFiles/state.dir/src/ai.c.o: src/ai.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/state.dir/src/ai.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/ai.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/ai.c
+
+CMakeFiles/state.dir/src/ai.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/state.dir/src/ai.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hamedsy/Desktop/mabani/state.io/src/ai.c > CMakeFiles/state.dir/src/ai.c.i
+
+CMakeFiles/state.dir/src/ai.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/ai.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/ai.c -o CMakeFiles/state.dir/src/ai.c.s
+
+CMakeFiles/state.dir/src/game.c.o: CMakeFiles/state.dir/flags.make
+CMakeFiles/state.dir/src/game.c.o: src/game.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/state.dir/src/game.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/game.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/game.c
+
+CMakeFiles/state.dir/src/game.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/state.dir/src/game.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hamedsy/Desktop/mabani/state.io/src/game.c > CMakeFiles/state.dir/src/game.c.i
+
+CMakeFiles/state.dir/src/game.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/game.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/game.c -o CMakeFiles/state.dir/src/game.c.s
+
+CMakeFiles/state.dir/src/login.c.o: CMakeFiles/state.dir/flags.make
+CMakeFiles/state.dir/src/login.c.o: src/login.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/state.dir/src/login.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/login.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/login.c
+
+CMakeFiles/state.dir/src/login.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/state.dir/src/login.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hamedsy/Desktop/mabani/state.io/src/login.c > CMakeFiles/state.dir/src/login.c.i
+
+CMakeFiles/state.dir/src/login.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/login.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/login.c -o CMakeFiles/state.dir/src/login.c.s
+
 CMakeFiles/state.dir/src/main.c.o: CMakeFiles/state.dir/flags.make
 CMakeFiles/state.dir/src/main.c.o: src/main.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/state.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/state.dir/src/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/main.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/main.c
 
 CMakeFiles/state.dir/src/main.c.i: cmake_force
@@ -70,17 +109,53 @@ CMakeFiles/state.dir/src/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/main.c -o CMakeFiles/state.dir/src/main.c.s
 
+CMakeFiles/state.dir/src/map_choosing.c.o: CMakeFiles/state.dir/flags.make
+CMakeFiles/state.dir/src/map_choosing.c.o: src/map_choosing.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/state.dir/src/map_choosing.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/map_choosing.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/map_choosing.c
+
+CMakeFiles/state.dir/src/map_choosing.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/state.dir/src/map_choosing.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hamedsy/Desktop/mabani/state.io/src/map_choosing.c > CMakeFiles/state.dir/src/map_choosing.c.i
+
+CMakeFiles/state.dir/src/map_choosing.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/map_choosing.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/map_choosing.c -o CMakeFiles/state.dir/src/map_choosing.c.s
+
+CMakeFiles/state.dir/src/menu.c.o: CMakeFiles/state.dir/flags.make
+CMakeFiles/state.dir/src/menu.c.o: src/menu.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/state.dir/src/menu.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/state.dir/src/menu.c.o   -c /home/hamedsy/Desktop/mabani/state.io/src/menu.c
+
+CMakeFiles/state.dir/src/menu.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/state.dir/src/menu.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/hamedsy/Desktop/mabani/state.io/src/menu.c > CMakeFiles/state.dir/src/menu.c.i
+
+CMakeFiles/state.dir/src/menu.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/state.dir/src/menu.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/hamedsy/Desktop/mabani/state.io/src/menu.c -o CMakeFiles/state.dir/src/menu.c.s
+
 # Object files for target state
 state_OBJECTS = \
-"CMakeFiles/state.dir/src/main.c.o"
+"CMakeFiles/state.dir/src/ai.c.o" \
+"CMakeFiles/state.dir/src/game.c.o" \
+"CMakeFiles/state.dir/src/login.c.o" \
+"CMakeFiles/state.dir/src/main.c.o" \
+"CMakeFiles/state.dir/src/map_choosing.c.o" \
+"CMakeFiles/state.dir/src/menu.c.o"
 
 # External object files for target state
 state_EXTERNAL_OBJECTS =
 
+state: CMakeFiles/state.dir/src/ai.c.o
+state: CMakeFiles/state.dir/src/game.c.o
+state: CMakeFiles/state.dir/src/login.c.o
 state: CMakeFiles/state.dir/src/main.c.o
+state: CMakeFiles/state.dir/src/map_choosing.c.o
+state: CMakeFiles/state.dir/src/menu.c.o
 state: CMakeFiles/state.dir/build.make
 state: CMakeFiles/state.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable state"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/hamedsy/Desktop/mabani/state.io/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable state"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/state.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

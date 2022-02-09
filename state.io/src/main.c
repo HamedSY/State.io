@@ -7,14 +7,16 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "globals.h"
-#include "login.c"
-#include "menu.c"
-#include "map_choosing.c"
-#include "game.c"
-#include "ai.c"
+// #include "login.c"
+// #include "menu.c"
+// #include "map_choosing.c"
+// #include "game.c"
+// #include "ai.c"
 
 
 int main() {
+	globalsInit();
+
 	srand(time(NULL));
 
 	// inits
@@ -153,15 +155,22 @@ int main() {
 		int event = menuEventHandling( myRenderer );
 		if( event == 0 )
 			return 0;
-		if( event == 1 )
+		else if( event == 1 )
 			break;
-		if( isHovernewGame )  
+		
+		else if( event == 2 ) {
+			loading = 1;
+			loadTheGame();
+			break;
+		}
+		
+		else if( isHovernewGame )  
 			roundedBoxRGBA( myRenderer , 350 , 250 , 650 , 330 , 10 , 255 , 255 , 255 , 60 );
 
-		if( isHoverLoadGame )
+		else if( isHoverLoadGame )
 			roundedBoxRGBA( myRenderer , 350 , 365 , 650 , 445 , 10 , 255 , 255 , 255 , 60 );
 
-		if( isHoverScoreBoard )
+		else if( isHoverScoreBoard )
 			roundedBoxRGBA( myRenderer , 350 , 480 , 650 , 560 , 10 , 255 , 255 , 255 , 60 );
 		
 		
@@ -181,6 +190,8 @@ int main() {
 	SDL_FreeSurface( loadGameSurface );
 	SDL_FreeSurface( scoreBoardSurface );
 
+
+if( !loading ) {
 
 // MAP CHOOSING
 	
@@ -248,7 +259,7 @@ int main() {
 		SDL_RenderCopy( myRenderer , menuBackImgTexture , NULL , NULL );
 		SDL_RenderCopy( myRenderer , chooseMapTexture , NULL , &chooseMapRect );
 		SDL_RenderCopy( myRenderer , chooseDiffTexture , NULL , &chooseDiffRect );
-		drawChossingBoxes( myRenderer );
+		drawChoosingBoxes( myRenderer );
 		SDL_RenderCopy( myRenderer , mediumTexture , NULL , &mediumRect );
 		SDL_RenderCopy( myRenderer , hardTexture , NULL , &hardRect );
 		SDL_RenderCopy ( myRenderer , ringlessGal , NULL , &ringlessRect );
@@ -309,13 +320,13 @@ int main() {
 	SDL_FreeSurface( randomSurface );
 	SDL_FreeSurface( continueSurface );
 
-
+}
 
 
 
 // GAME
-
-	n = initializingCities();
+	if( !loading )
+		n = initializingCities();
 
 	// background of map image
 	SDL_Texture *mapBackImgTexture = IMG_LoadTexture( myRenderer , "images/back.jpg");
@@ -361,8 +372,12 @@ int main() {
 		}
 
 		// event handling
-		if( !gameEventHandling( myRenderer ) )
+		if( !gameEventHandling( myRenderer ) ) {
+			if( !end ) 
+				saveTheGame();
+
 			break;
+		}
 		if ( mouseOnMe ) {
 			lineColor( myRenderer , (cities[mei][mej].x1 + cities[mei][mej].x2) / 2 , (cities[mei][mej].y1 + cities[mei][mej].y2) / 2
 			, mouse.x , mouse.y , 0xff000000 );

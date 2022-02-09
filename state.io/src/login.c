@@ -8,8 +8,6 @@
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include "globals.h"
 
-int menuEventHandling( SDL_Renderer *rend );
-void usernameInputBox( SDL_Renderer *rend );
 
 
 int loginEventHandling( SDL_Renderer *rend ) {
