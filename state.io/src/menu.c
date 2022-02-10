@@ -181,6 +181,7 @@ void globalsInit() {
 	snowVisible = 0; snowOn = 0;
 	ufoOn = 0; ufoVisible = 0;
 	infOn = 0; infVisible = 0;
+	inf.flag = 0; ufo.flag = 0; rocket.flag = 0; snow.flag = 0;
 
 
 	ringedPlanets[0] = 1;   ringlessPlanets[0] = 2;
@@ -193,9 +194,7 @@ void globalsInit() {
 	ringedPlanets[7] = 15;  ringlessPlanets[7] = 17;
 	ringedPlanets[8] = 16;  ringlessPlanets[8] = 18;
 
-	for( int i = 0; i < 3; i++ )
-		for( int j = 0; j < n; j++ )
-			AIPoints[i][j] = 0;
+	zeroer2D( AIPoints );
 
 }
 

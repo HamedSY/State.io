@@ -54,8 +54,8 @@ int diff , gal;
 int end , loading , update , scoreboard;
 int n , temp , temp2 , frame , potFrame;
 double navarx , navarai;
-int myflag[200] , AIflag[200] , myflag2[200] , 
-AIflag2[200] , hitflag[200] , AIhitflag[200];
+int myflag[500] , AIflag[500] , myflag2[500] , 
+AIflag2[500] , hitflag[500] , AIhitflag[500];
 int hitcounter , AIhitcounter;
 int inputLoc;
 
@@ -79,7 +79,7 @@ int ufoOn , ufoVisible;
 int infOn , infVisible;
 
 Coordination begin , dest , begin2 , dest2;
-Coordination mouse , soldier[200] , soldier2[200];
+Coordination mouse , soldier[500] , soldier2[500];
 
 SDL_Rect planetsRect[4][6];
 SDL_Texture *planetsTexture[18];
@@ -106,6 +106,7 @@ double distanceCalc( Coordination a , Coordination b );
 void drawEndingBoxes( SDL_Renderer *rend );
 void coordZeroer( int n , Coordination a[] );
 void zeroer( int n , int a[] );
+void zeroer2D( int a[4][6] );
 
 int loginEventHandling( SDL_Renderer *rend );
 void usernameInputBox( SDL_Renderer *rend );

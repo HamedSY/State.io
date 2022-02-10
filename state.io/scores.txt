@@ -1,5 +1,5 @@
 60 mohammad
-190 hamed
+70 hamed
 90 saleh
 180 ali
 50 gholam

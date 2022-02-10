@@ -139,7 +139,7 @@ void AIsendingSoldiers( SDL_Renderer *rend ) {
         AIhitcounter == temp2  ) {
             AIisSendingSoldiers = 0;
             AIhitcounter = 0;
-            coordZeroer( 200 , soldier2 );
+            coordZeroer( 500 , soldier2 );
         }
 
         if( ( abs( soldier2[k].x - soldier2[k + 1].x ) <= 12 ) && ( abs( soldier2[k].y - soldier2[k + 1].y ) <= 12 ) && !snowOn ) {

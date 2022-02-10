@@ -505,7 +505,6 @@ if( scoreboard ) {
 
 
 	Mix_HaltMusic();
-	Mix_FreeMusic( menuMusic );
 
 	// game loop
 	while( 1 ) {
@@ -702,25 +701,25 @@ if( scoreboard ) {
 
 
 		// potions
-		if( frame % 4000 == 1000 ) {
+		if( frame % 4800 == 200 ) {
 			rocketVisible = 1;
 			rocketInit();
 			rocketRect.x = rocket.x - 20; rocketRect.y = rocket.y - 20; rocketRect.w = 40; rocketRect.h = 40;
 		}
 
-		if( frame % 4000 == 1900 ) {
+		if( frame % 4800 == 1400 ) {
 			snowVisible = 1;
 			snowInit();
 			snowRect.x = snow.x - 20; snowRect.y = snow.y - 20; snowRect.w = 40; snowRect.h = 40;
 		}
 
-		if( frame % 4000 == 2800 ) {
+		if( frame % 4800 == 2600 ) {
 			ufoVisible = 1;
 			ufoInit();
 			ufoRect.x = ufo.x - 20; ufoRect.y = ufo.y - 20; ufoRect.w = 40; ufoRect.h = 40;
 		}
 
-		if( frame % 4000 == 100 ) {
+		if( frame % 4800 == 3800 ) {
 			infVisible = 1;
 			infInit();
 			infRect.x = inf.x - 30; infRect.y = inf.y - 15; infRect.w = 60; infRect.h = 30;
@@ -728,16 +727,16 @@ if( scoreboard ) {
 
 		
 
-		if( frame % 4000 == 1400 ) 
+		if( frame % 4800 == 600 ) 
 			rocketVisible = 0;
 		
-		if( frame % 4000 == 2400 ) 
+		if( frame % 4800 == 1800 ) 
 			snowVisible = 0;
 
-		if( frame % 4000 == 3400 ) 
+		if( frame % 4800 == 3000 ) 
 			ufoVisible = 0;
 
-		if( frame % 4000 == 500 ) 
+		if( frame % 4800 == 4200 ) 
 			infVisible = 0;
 		
 
@@ -773,7 +772,7 @@ if( scoreboard ) {
 	TTF_CloseFont( funtasia50 );
 	TTF_CloseFont( funtasia70 );
 
-	
+	Mix_FreeMusic( menuMusic );
 	
 
 	SDL_DestroyWindow( myWindow );

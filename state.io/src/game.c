@@ -42,9 +42,9 @@ int gameEventHandling( SDL_Renderer *rend ) {
         }
 		if( flag ) {
 			AIisSendingSoldiers = 1;
-			zeroer( 200 , AIflag );
-			zeroer( 200 , AIflag2 );
-			zeroer( 200 , AIhitflag );
+			zeroer( 500 , AIflag );
+			zeroer( 500 , AIflag2 );
+			zeroer( 500 , AIhitflag );
 			temp2 = cities[enemyi][enemyj].soldiers_num;
 			for(int i = 0; i < cities[enemyi][enemyj].soldiers_num; i++) {
 				soldier2[i].x = ((cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2);
@@ -55,29 +55,33 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 			Coordination mab = { (double)cities[enemyi][enemyj].x1 , (double)cities[enemyi][enemyj].y1 } ,
 			magh = { (double)cities[desti][destj].x1 , (double)cities[desti][destj].y1 };
-			int whichPot = 0 , maxx = -3000;
+			int maxx = -3000; 
+			zeroer2D( AIPoints );
 
 			for( int i = 0; i < 3; i++ ) {
 				for( int j = 0; j < n; j++ ) {
 
 					if( i == enemyi && j == enemyj ) AIPoints[i][j] -= 1000;
-					if( cities[i][j].soldiers_num + 1 < cities[enemyi][enemyj].soldiers_num ) AIPoints[i][j] += 30;
-					if( cities[i][j].flag == 2 ) AIPoints[i][j] -= 20;
-					AIPoints[i][j] -= (int)( ( distanceCalc( mab , magh ) ) / 16 );
-					if( cities[i][j].flag == 1 ) AIPoints[i][j] += 30;
+					AIPoints[i][j] += ( cities[enemyi][enemyj].soldiers_num - cities[i][j].soldiers_num ) ;
+					if( cities[i][j].flag == 2 ) AIPoints[i][j] -= 30;
+					AIPoints[i][j] -= (int)( ( distanceCalc( mab , magh ) ) / 15 );
+					if( cities[i][j].flag == 1 ) AIPoints[i][j] += 50;
 					
 					if( rocketVisible || snowVisible || ufoVisible || infVisible ) {
 						double c , cprim , shib;
-						shib = ( (double)cities[i][j].y1 - (double)cities[enemyi][enemyj].y1 ) / 
-						( (double)cities[i][j].x1 - (double)cities[enemyi][enemyj].x1 );
-						c = cities[enemyi][enemyj].y1 - (shib * cities[enemyi][enemyj].x1);
+						shib = ( ( ( (double)cities[i][j].y1 + (double)cities[i][j].y2 ) / 2 ) - 
+						( ( (double)cities[enemyi][enemyj].y1 + (double)cities[enemyi][enemyj].y2 ) / 2 ) ) / 
+						( ( ( (double)cities[i][j].x1 + (double)cities[i][j].x2 ) / 2 ) - 
+						( ( (double)cities[enemyi][enemyj].x1 + (double)cities[enemyi][enemyj].x2 ) / 2 ) );
 						cprim =
 						( rocketVisible * ( rocket.y - (shib * rocket.x) ) ) +
 						( snowVisible   * ( snow.y   - (shib * snow.x  ) ) ) +
 						( ufoVisible    * ( ufo.y    - (shib * ufo.x   ) ) ) +
 						( infVisible    * ( inf.y    - (shib * inf.x   ) ) ) ;
+						c = ( ( (double)cities[enemyi][enemyj].y1 + (double)cities[enemyi][enemyj].y2 ) / 2 ) - 
+						( shib * ( ( (double)cities[enemyi][enemyj].x1 + (double)cities[enemyi][enemyj].x2 ) / 2 ) );
 
-						if( ( abs(c - cprim) / sqrt( (shib * shib) + 1 ) ) < SOLDIER_R + 2 ) 
+						if( ( abs(c - cprim) / sqrt( (shib * shib) + 1 ) ) < SOLDIER_R + 20 ) 
 							AIPoints[i][j] += 200;
 					}
 
@@ -137,9 +141,9 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 						isSendingSoldiers = 1; 
 						temp = cities[mei][mej].soldiers_num;
-						zeroer( 200 , myflag );
-						zeroer( 200 , myflag2 );
-						zeroer( 200 , hitflag );
+						zeroer( 500 , myflag );
+						zeroer( 500 , myflag2 );
+						zeroer( 500 , hitflag );
 
 					}
 				}
@@ -350,7 +354,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			( hitcounter == temp ) ) {
 				isSendingSoldiers = 0;
 				hitcounter = 0;
-				coordZeroer( 200 , soldier );
+				coordZeroer( 500 , soldier );
 			}
 
 			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 12 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 12 ) ) {
@@ -554,9 +558,9 @@ int initializingCities() {
 	} while( (enemyi == mei && enemyj == mej) );
 
 	cities[mei][mej].flag = 1;
-	cities[mei][mej].soldiers_num += 30;
+	cities[mei][mej].soldiers_num += 10;
 	cities[enemyi][enemyj].flag = 2;
-	cities[enemyi][enemyj].soldiers_num += 30;
+	cities[enemyi][enemyj].soldiers_num += 10;
 
 	return n;
 }
@@ -593,6 +597,14 @@ void printMap( SDL_Renderer* rend , int n ) {
 		}
 	}
 
+}
+
+
+void zeroer2D( int a[4][6] ) {
+	for(int i = 0; i < 4; i++) 
+		for(int j = 0; j < 6; j++)
+			a[i][j] = 0;
+	
 }
 
 
