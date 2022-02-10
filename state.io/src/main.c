@@ -692,19 +692,12 @@ if( scoreboard ) {
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				SDL_DestroyTexture( planetsTexture[counter] );
+				SDL_DestroyTexture( solNumTexture[i][j] );
+				SDL_FreeSurface( solNumSurface[i][j] );
 				counter++;
 			}
 		}
 
-
-		if( frame % 15 == 1 ) {
-			for(int i = 0; i < 3; i++) {
-				for(int j = 0; j < n; j++) {
-					SDL_DestroyTexture( solNumTexture[i][j] );
-					SDL_FreeSurface( solNumSurface[i][j] );
-				}
-			}
-		}
 
 		// potions
 		if( frame % 4000 == 1000 ) {

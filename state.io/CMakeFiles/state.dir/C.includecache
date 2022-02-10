@@ -6,10 +6,16 @@
 
 #IncludeRegexTransform: 
 
-/home/hamedsy/Desktop/mabani/state.io/src/game.c
+/home/hamedsy/Desktop/mabani/state.io/src/globals.h
+
+/home/hamedsy/Desktop/mabani/state.io/src/main.c
 stdio.h
 -
 stdlib.h
+-
+time.h
+-
+unistd.h
 -
 SDL2/SDL.h
 -
@@ -17,19 +23,7 @@ SDL2/SDL2_gfxPrimitives.h
 -
 SDL2/SDL_image.h
 -
-globals.h
-/home/hamedsy/Desktop/mabani/state.io/src/globals.h
-
-/home/hamedsy/Desktop/mabani/state.io/src/globals.h
-
-/home/hamedsy/Desktop/mabani/state.io/src/menu.c
-stdio.h
--
-stdlib.h
--
-SDL2/SDL.h
--
-SDL2/SDL2_gfxPrimitives.h
+SDL2/SDL_ttf.h
 -
 globals.h
 /home/hamedsy/Desktop/mabani/state.io/src/globals.h
