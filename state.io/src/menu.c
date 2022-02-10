@@ -35,10 +35,9 @@ int menuEventHandling( SDL_Renderer *rend ) {
 
 		if( mouse.x > 350 && mouse.x < 650 && mouse.y > 365 && mouse.y < 445 ) {
 			isHoverLoadGame = 1;
-			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) {
-				// printf("salam");
+			if( ev.type == SDL_MOUSEBUTTONDOWN && ev.button.button == SDL_BUTTON_LEFT ) 
 				return 2;
-			}
+			
 		}
 		else 
 			isHoverLoadGame = 0;
@@ -100,10 +99,8 @@ void sortScores() {
 
 	while( !feof( scores ) ) {
 		fscanf( scores , "%d %[^\n]s\n" , &sortedScores[i] , sortedNames[i] );
-		// printf("%s : %d\n" , sortedNames[i] , sortedScores[i]);
 		i++;
 	}
-	// printf("%d\n" , i);
 
 	for( int j = 0; j < i - 2; j++ ) {
 		for( int k = j + 1; k < i - 1; k++ ) {
@@ -120,17 +117,12 @@ void sortScores() {
 		}
 	}
 
-	// for( int j = 0; j < i - 1; j++ ) {
-	// 	printf("%s : %d\n" , sortedNames[j] , sortedScores[j]);
-	// }
-
 	fclose( scores );
 }
 
 
 void loadTheGame() {
 	
-	// printf("%s" , username);
 	char filename[50] = {0};
 	strcat( filename , "savings/" );
 	strcat( filename , username );
@@ -182,7 +174,7 @@ void globalsInit() {
 	isHoverReturn = 0; isHoverQuit = 0; isHoverBack = 0;
 	diff = 0 ; gal = 0; end = 0; loading = 0; update = 0; scoreboard = 0;
 	hitcounter = 0 ; AIhitcounter = 0; inputLoc = 0;
-	frame = 1;
+	frame = 1; n =0;
 	navarx = 250; navarai = 750;
 	// velocity = MY_VEL;
 	rocketVisible = 0; rocketOn = 0;
@@ -200,6 +192,10 @@ void globalsInit() {
 	ringedPlanets[6] = 10;  ringlessPlanets[6] = 14;
 	ringedPlanets[7] = 15;  ringlessPlanets[7] = 17;
 	ringedPlanets[8] = 16;  ringlessPlanets[8] = 18;
+
+	for( int i = 0; i < 3; i++ )
+		for( int j = 0; j < n; j++ )
+			AIPoints[i][j] = 0;
 
 }
 

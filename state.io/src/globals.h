@@ -64,6 +64,7 @@ int ringedPlanets[9];
 int ringlessPlanets[9];
 int sortedScores[500];
 char sortedNames[500][30];
+int AIPoints[4][6];
 
 City cities[4][6];
 
@@ -101,6 +102,7 @@ void AIsolNumIncreasing();
 int checkTheEnd();
 void saveTheGame();
 void updateScores();
+double distanceCalc( Coordination a , Coordination b );
 void drawEndingBoxes( SDL_Renderer *rend );
 void coordZeroer( int n , Coordination a[] );
 void zeroer( int n , int a[] );

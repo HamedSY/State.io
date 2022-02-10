@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL2_gfxPrimitives.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_mixer.h>
 
+// include my .h file
 #include "globals.h"
 
 
@@ -16,12 +17,16 @@ int main() {
 	srand(time(NULL));
 
 	// inits
-	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
 		printf("error : %s\n" , SDL_GetError());
 		return 0;
 	}
 	if(TTF_Init() == -1) {
 		printf("error : %s\n" , TTF_GetError());
+		return 0;
+	}
+	if( Mix_OpenAudio( 44100 , MIX_DEFAULT_FORMAT , 2 , 2048 ) < 0 ) {
+		printf("error : %s\n" , Mix_GetError());
 		return 0;
 	}
 
@@ -36,18 +41,18 @@ int main() {
 	TTF_Font *funtasia50 = TTF_OpenFont("fonts/Funtasia.otf" , 50);
 	TTF_Font *funtasia70 = TTF_OpenFont("fonts/Funtasia.otf" , 70);
 	TTF_Font *funtasia100 = TTF_OpenFont("fonts/Funtasia.otf" , 100);
-
+	// musics
+	Mix_Music *menuMusic = Mix_LoadMUS("musics/Dramatic-Adventure.mp3");
 	// menu background image
-	SDL_Surface *menuBackImgSurface = IMG_Load("images/back2.jpg");
-	SDL_Texture *menuBackImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuBackImgSurface);
+	SDL_Texture *menuBackImgTexture = IMG_LoadTexture( myRenderer , "images/back2.jpg" );
 
-	
-	
 
 
 //LOGIN
 	// enter your username please...
-	LOGIN: username[0] = '\0';
+	LOGIN: {username[0] = '\0';}
+	if(!Mix_PlayingMusic()) Mix_PlayMusic( menuMusic , -1 );
+
 	SDL_Surface *enterUsernameSurface = TTF_RenderText_Blended( funtasia70 , "Enter Your Username Please" , ORANGE );
 	SDL_Texture *enterUsernameTexture = SDL_CreateTextureFromSurface( myRenderer , enterUsernameSurface );
 	SDL_Rect enterUsernameRect; enterUsernameRect.x = 145; enterUsernameRect.y = 140;
@@ -77,13 +82,13 @@ int main() {
 		usernameInputBox( myRenderer );
 		SDL_RenderCopy( myRenderer , continueTexture , NULL , &continueRect );
 
-
 		// event handling
 		int event1 = loginEventHandling( myRenderer );
 		if( event1 == 0 )
 			return 0;
 		else if( event1 == 1 )
 			break;
+
 		if( isHoverContinue )
 			roundedBoxRGBA( myRenderer , 400 , 450 , 600 , 520 , 10 , 255 , 255 , 255 , 60 );
 
@@ -96,12 +101,12 @@ int main() {
 		}
 
 
-
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
 	}
 
+	// destroyings
 	SDL_StopTextInput();
 	SDL_DestroyTexture( textInputTexture );
 	SDL_DestroyTexture( enterUsernameTexture );
@@ -110,12 +115,13 @@ int main() {
 	SDL_FreeSurface( enterUsernameSurface );
 	SDL_FreeSurface( continueSurface );
 
+	// saving usernames
 	saveUsername();
 	
 
 // MENU
 	// menu title
-	MENU: globalsInit();
+	MENU: {globalsInit(); if(!Mix_PlayingMusic()) Mix_PlayMusic( menuMusic , -1 );}
 	SDL_Surface *menuTitleImgSurface = IMG_Load("images/menu_title.png");
 	SDL_Texture *menuTitleImgTexture = SDL_CreateTextureFromSurface(myRenderer , menuTitleImgSurface);
 	SDL_Rect menuTitleImgRect; menuTitleImgRect.x = 260; menuTitleImgRect.y = 20;
@@ -137,10 +143,12 @@ int main() {
 	SDL_Rect scoreBoardRect; scoreBoardRect.x = 380; scoreBoardRect.y = 490;
 	SDL_QueryTexture( scoreBoardTexture , NULL , NULL , &scoreBoardRect.w , &scoreBoardRect.h );
 
+	// back
 	SDL_Surface *backSurface = IMG_Load("images/back.png");
 	SDL_Texture *backTexture = SDL_CreateTextureFromSurface(myRenderer , backSurface);
 	SDL_Rect backRect; backRect.x = 25; backRect.y = 530; backRect.w = 40; backRect.h = 40;
 
+	// sorting scores
 	sortScores();
 
 
@@ -158,10 +166,8 @@ int main() {
 		filledCircleRGBA( myRenderer , 50 , 550 , 30 , ORANGE.r , ORANGE.g , ORANGE.b , 255 );
 		SDL_RenderCopy( myRenderer , backTexture , NULL , &backRect );
 
-
 		// event handling
 		int event2 = menuEventHandling( myRenderer );
-		// printf("%d" , event2);
 		if( event2 == 0 )
 			return 0;
 		else if( event2 == 1 )
@@ -173,7 +179,6 @@ int main() {
 			strcat( filename , "savings/" );
 			strcat( filename , username );
 			strcat( filename , ".txt" );
-			// printf("%s" , filename);
 			if( file = fopen(filename , "r") ) {
 				fclose(file);
 				loading = 1;
@@ -304,7 +309,6 @@ if( !loading && !scoreboard ) {
 		filledCircleRGBA( myRenderer , 50 , 550 , 30 , ORANGE.r , ORANGE.g , ORANGE.b , 255 );
 		SDL_RenderCopy( myRenderer , backTexture , NULL , &backRect );
 		
-		
 
 		// event handling
 		int event3 = mapChoosingEventHandling( myRenderer );
@@ -330,12 +334,13 @@ if( !loading && !scoreboard ) {
 		else if( isHoverBack )
 			filledCircleRGBA( myRenderer , 50 , 550 , 30 , WHITE.r , WHITE.g , WHITE.b , 40 );
 		
-
+		
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
 	}
 
+	// destroyings
 	SDL_DestroyTexture( ringGal );
 	SDL_DestroyTexture( ringlessGal );
 	SDL_DestroyTexture( random );
@@ -422,15 +427,13 @@ if( scoreboard ) {
 		if( isHoverBack )
 			filledCircleRGBA( myRenderer , 50 , 550 , 30 , WHITE.r , WHITE.g , WHITE.b , 40 );
 
-		
-
 
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
 		SDL_RenderClear( myRenderer );
 	}
 
-
+	// destroyings
 	SDL_DestroyTexture( leader1Texture );
 	SDL_DestroyTexture( leaderImgTexture );
 	SDL_DestroyTexture( leaderTexture );
@@ -501,6 +504,8 @@ if( scoreboard ) {
 	SDL_Rect infRect;
 
 
+	Mix_HaltMusic();
+	Mix_FreeMusic( menuMusic );
 
 	// game loop
 	while( 1 ) {
@@ -510,7 +515,6 @@ if( scoreboard ) {
 
 		SDL_RenderCopy( myRenderer , mapBackImgTexture , NULL , NULL );
 		printMap( myRenderer , n );
-
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				sprintf( solNumStr , "%d" , cities[i][j].soldiers_num );
@@ -524,27 +528,25 @@ if( scoreboard ) {
 		}
 
 
-		// AI handling
-		if( AIisSendingSoldiers && !end ) {
+		// AI
+		if( AIisSendingSoldiers && !end ) 
 			AIsendingSoldiers( myRenderer );
-		}
+		
 
 		// event handling
 		int event4 = gameEventHandling( myRenderer );
 		if( !event4 ) {
 			if( !end ) 
 				saveTheGame();
-
 			break;
 		}
 
-		else if( event4 == 1 ) 
+		else if( event4 == 1 )
 			goto MENU;
 
 		else if( event4 == 2 )
 			return 0;
 
-		
 		
 		if ( mouseOnMe ) 
 			lineColor( myRenderer , (cities[mei][mej].x1 + cities[mei][mej].x2) / 2 , (cities[mei][mej].y1 + cities[mei][mej].y2) / 2
@@ -748,57 +750,39 @@ if( scoreboard ) {
 		
 	}
 
-	
-	SDL_DestroyWindow( myWindow );
-	SDL_DestroyRenderer( myRenderer );
+	SDL_DestroyTexture( menuBackImgTexture );
+	SDL_DestroyTexture( mapBackImgTexture );
+	SDL_DestroyTexture( youWinTexture );
+	SDL_DestroyTexture( youLoseTexture );
+	SDL_DestroyTexture( returnTexture );
+	SDL_DestroyTexture( quitTexture );
+	SDL_DestroyTexture( rocketTexture );
+	SDL_DestroyTexture( snowTexture );
+	SDL_DestroyTexture( ufoTexture );
+	SDL_DestroyTexture( infTexture );
 
-    SDL_DestroyTexture( mapBackImgTexture );
+	SDL_FreeSurface( youWinSurface );
+	SDL_FreeSurface( youLoseSurface );
+	SDL_FreeSurface( returnSurface );
+	SDL_FreeSurface( quitSurface );
+
 
 	TTF_CloseFont( funtasia100 );
 	TTF_CloseFont( funtasia20 );
 	TTF_CloseFont( funtasia40 );
 	TTF_CloseFont( funtasia50 );
 	TTF_CloseFont( funtasia70 );
-	TTF_CloseFont( funtasia40 );
+
+	
+	
+
+	SDL_DestroyWindow( myWindow );
+	SDL_DestroyRenderer( myRenderer );
 	
 	SDL_Quit();
 	IMG_Quit();
 	TTF_Quit();
+	Mix_Quit();
 	
     return 0;
 }
-
-
-
-
-
-
-/*
-
-	bakhsh haye baghi mande {
-
-		- zakhire sazi ha:
-			- usernames
-			- scoreboards
-			- zakhire sazi khode bazi
-
-		//- handle kardan chand enemy
-
-		- map haye amaade
-
-		- moshakhas shodan baakht o bord ha baad az etmam bazi
-
-		- ma'joons
-	}
-
-
-	bakhsh haye naghes ya bug dar {
-		
-		//- hamle hamzaman
-
-		- hamle tan be tan ya inke har do be ye ja hamle konim
-
-		- taghviat AI
-	}
-
-*/

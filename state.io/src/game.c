@@ -9,8 +9,6 @@
 #include "globals.h"
 
 
-
-
 void zeroer( int n , int a[] ) {
 	for(int i = 0; i < n; i++)
 		a[i] = 0;
@@ -44,8 +42,6 @@ int gameEventHandling( SDL_Renderer *rend ) {
         }
 		if( flag ) {
 			AIisSendingSoldiers = 1;
-			// printf("AI got 1\n");
-			// cities[enemyi][enemyj].isSendingSol = 1;
 			zeroer( 200 , AIflag );
 			zeroer( 200 , AIflag2 );
 			zeroer( 200 , AIhitflag );
@@ -53,16 +49,48 @@ int gameEventHandling( SDL_Renderer *rend ) {
 			for(int i = 0; i < cities[enemyi][enemyj].soldiers_num; i++) {
 				soldier2[i].x = ((cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2);
 				soldier2[i].y = ((cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2);
-				// printf("sol2.x : %lf / sol2.y : %lf\n" , soldier2[i].x , soldier2[i].y );
 			}
 			begin2.x = (cities[enemyi][enemyj].x1 + cities[enemyi][enemyj].x2) / 2;
 			begin2.y = (cities[enemyi][enemyj].y1 + cities[enemyi][enemyj].y2) / 2;
 
-			do {
-				desti = rand() % 3;
-				destj = rand() % n;
-			} while( ( desti == enemyi && destj == enemyj ) || ( cities[desti][destj].flag == 2 )
-				  || ( cities[desti][destj].flag == 2 ) || ( cities[desti][destj].soldiers_num >= cities[enemyi][enemyj].soldiers_num ) );
+			Coordination mab = { (double)cities[enemyi][enemyj].x1 , (double)cities[enemyi][enemyj].y1 } ,
+			magh = { (double)cities[desti][destj].x1 , (double)cities[desti][destj].y1 };
+			int whichPot = 0 , maxx = -3000;
+
+			for( int i = 0; i < 3; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+
+					if( i == enemyi && j == enemyj ) AIPoints[i][j] -= 1000;
+					if( cities[i][j].soldiers_num + 1 < cities[enemyi][enemyj].soldiers_num ) AIPoints[i][j] += 30;
+					if( cities[i][j].flag == 2 ) AIPoints[i][j] -= 20;
+					AIPoints[i][j] -= (int)( ( distanceCalc( mab , magh ) ) / 16 );
+					if( cities[i][j].flag == 1 ) AIPoints[i][j] += 30;
+					
+					if( rocketVisible || snowVisible || ufoVisible || infVisible ) {
+						double c , cprim , shib;
+						shib = ( (double)cities[i][j].y1 - (double)cities[enemyi][enemyj].y1 ) / 
+						( (double)cities[i][j].x1 - (double)cities[enemyi][enemyj].x1 );
+						c = cities[enemyi][enemyj].y1 - (shib * cities[enemyi][enemyj].x1);
+						cprim =
+						( rocketVisible * ( rocket.y - (shib * rocket.x) ) ) +
+						( snowVisible   * ( snow.y   - (shib * snow.x  ) ) ) +
+						( ufoVisible    * ( ufo.y    - (shib * ufo.x   ) ) ) +
+						( infVisible    * ( inf.y    - (shib * inf.x   ) ) ) ;
+
+						if( ( abs(c - cprim) / sqrt( (shib * shib) + 1 ) ) < SOLDIER_R + 2 ) 
+							AIPoints[i][j] += 200;
+					}
+
+					if( AIPoints[i][j] > maxx ) {
+						maxx = AIPoints[i][j];
+						desti = i;
+						destj = j;
+					}
+
+				}
+			}
+
+
 
 			dest2.x = ( cities[desti][destj].x1 + cities[desti][destj].x2 ) / 2;
 			dest2.y = ( cities[desti][destj].y1 + cities[desti][destj].y2 ) / 2;
@@ -115,7 +143,6 @@ int gameEventHandling( SDL_Renderer *rend ) {
 
 					}
 				}
-				// else { isSendingSoldiers = 0; cities[mei][mej].isSendingSol = 0; }
 				mouseOnMe = 0;
 			}
 			
@@ -183,7 +210,6 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 					dest.x = (cities[i][j].x1 + cities[i][j].x2) / 2;
 					dest.y = (cities[i][j].y1 + cities[i][j].y2) / 2;
 					flag = 1;
-					// printf("flag is okay\n");
 					break;
 				}
 			}
@@ -192,7 +218,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 	}
 
 	if(flag) {
-		// cities[mei][mej].isSendingSol = 1;
+
 		for(int k = 0; k < temp; k++) {
 
 			if( !hitflag[k] ) {
@@ -248,15 +274,15 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			}
 		
 			
-			soldier[k].x += MY_VEL * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
-			soldier[k].y += MY_VEL * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+			soldier[k].x += MY_VEL * ( (dest.x - begin.x) / distanceCalc( dest , begin ) );
+			soldier[k].y += MY_VEL * ( (dest.y - begin.y) / distanceCalc( dest , begin ) );
 
 			// potion
 			if( snow.flag == 2 ) 
             	MY_VEL = 0;
 
 
-			if( abs( rocket.x - soldier[k].x ) < SOLDIER_R + 12 && abs( rocket.y - soldier[k].y ) < SOLDIER_R + 12 && rocketVisible
+			if( abs( rocket.x - soldier[k].x ) < SOLDIER_R + 20 && abs( rocket.y - soldier[k].y ) < SOLDIER_R + 20 && rocketVisible
 			&& rocket.flag != 1 ) {
 				rocketVisible = 0;
 				rocketOn = 1;
@@ -265,7 +291,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 				navarx = 250;
 			}
 
-			else if( abs( snow.x - soldier[k].x ) < SOLDIER_R + 12 && abs( snow.y - soldier[k].y ) < SOLDIER_R + 12 && snowVisible
+			else if( abs( snow.x - soldier[k].x ) < SOLDIER_R + 20 && abs( snow.y - soldier[k].y ) < SOLDIER_R + 20 && snowVisible
 			&& snow.flag != 1 ) {
 				snowVisible = 0;
 				snowOn = 1;
@@ -273,7 +299,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 				navarx = 250;
 			}
 
-			else if( abs( ufo.x - soldier[k].x ) < SOLDIER_R + 12 && abs( ufo.y - soldier[k].y ) < SOLDIER_R + 12 && ufoVisible
+			else if( abs( ufo.x - soldier[k].x ) < SOLDIER_R + 20 && abs( ufo.y - soldier[k].y ) < SOLDIER_R + 20 && ufoVisible
 			&& ufo.flag != 1 ) {
 				ufoVisible = 0;
 				ufoOn = 1;
@@ -282,7 +308,7 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 				INCREASE_RATE = 15;
 			}
 
-			else if( abs( inf.x - soldier[k].x ) < SOLDIER_R + 12 && abs( inf.y - soldier[k].y ) < SOLDIER_R + 12 && infVisible
+			else if( abs( inf.x - soldier[k].x ) < SOLDIER_R + 30 && abs( inf.y - soldier[k].y ) < SOLDIER_R + 15 && infVisible
 			&& inf.flag != 1 ) {
 				infVisible = 0;
 				infOn = 1;
@@ -293,17 +319,18 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			
 			// hit
 			for(int u = 0; u < temp2; u++) {
-				if( abs( soldier[k].x - soldier2[u].x ) < SOLDIER_R + 1 && abs( soldier[k].y - soldier2[u].y ) < SOLDIER_R + 1 &&
+				if( abs( soldier[k].x - soldier2[u].x ) < SOLDIER_R + 2 && abs( soldier[k].y - soldier2[u].y ) < SOLDIER_R + 2 &&
 				( ( begin2.x > dest2.x && soldier2[u].x > dest2.x ) || ( begin2.x < dest2.x && soldier2[u].x < dest2.x ) ) ) {
 					if( !hitflag[k] ) {
 						hitflag[k] = 1;
 						hitcounter++;
-						// printf("k is : %d\tu is : %d\n" , k , u);
 					}
 				}
 			}
+
+
 			
-			if( abs(soldier[k].x - dest.x) <= 10 && abs(soldier[k].y - dest.y) <= 10 && !hitflag[k] ) {
+			if( abs(soldier[k].x - dest.x) <= 5 && abs(soldier[k].y - dest.y) <= 5 && !hitflag[k] ) {
 				if( !myflag[k] ) {
 					if( cities[i][j].flag == 1 ) {
 						incdec = 1;
@@ -323,12 +350,10 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			( hitcounter == temp ) ) {
 				isSendingSoldiers = 0;
 				hitcounter = 0;
-            	// soldier[ temp - 1 ].x = 0; soldier[ temp - 1 ].y = 0;
 				coordZeroer( 200 , soldier );
-				// cities[mei][mej].isSendingSol = 0;
 			}
 
-			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
+			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 12 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 12 ) ) {
 				break;
 			}
 
@@ -479,6 +504,12 @@ void updateScores() {
 	remove( "scores.txt" );
 	rename( "tmp.txt" , "scores.txt" );
 
+}
+
+
+double distanceCalc( Coordination a , Coordination b ) {
+	double x = sqrt( ( ( a.x - b.x ) * ( a.x - b.x ) ) + ( ( a.y - b.y ) * ( a.y - b.y ) ) );
+	return x;
 }
 
 

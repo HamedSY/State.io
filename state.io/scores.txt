@@ -1,12 +1,6 @@
 60 mohammad
-160 hamed
+190 hamed
 90 saleh
 180 ali
-0 gdnbhg
-30 hjg
-0 haemd
-0 hame
-0 kjhk
-0 jh
-0 mamad
-0 haemd 
+50 gholam
+0 saboor
