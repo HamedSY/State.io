@@ -18,6 +18,12 @@ typedef struct Coordination {
 	double y;
 } Coordination;
 
+typedef struct Potion {
+	double x;
+	double y;
+	int flag;
+} Potion;
+
 
 int SCREEN_WIDTH , SCREEN_HEIGHT ;
 int FPS;
@@ -25,6 +31,8 @@ int CENTER_R , SOLDIER_R;
 int COLOR_SOLDIERS_MAX_NUM;
 int ORDINARY_SOLDIERS_MAX_NUM;
 int AI_ATTACKING_FREQUENCY;
+double MY_VEL , AI_VEL;
+int INCREASE_RATE , AI_INCREASE_RATE;
 
 SDL_Color BLACK;
 SDL_Color WHITE;
@@ -44,12 +52,13 @@ isHoverMedium , isHoverHard , isHoverGal1 , isHoverGal2 , isHoverGal3 , isHoverC
 isHoverReturn , isHoverQuit , isHoverBack;
 int diff , gal;
 int end , loading , update , scoreboard;
-int n , temp , temp2 , frame;
+int n , temp , temp2 , frame , potFrame;
+double navarx , navarai;
 int myflag[200] , AIflag[200] , myflag2[200] , 
 AIflag2[200] , hitflag[200] , AIhitflag[200];
 int hitcounter , AIhitcounter;
 int inputLoc;
-double velocity;
+
 char solNumStr[10] , username[30];
 int ringedPlanets[9];
 int ringlessPlanets[9];
@@ -57,6 +66,16 @@ int sortedScores[500];
 char sortedNames[500][30];
 
 City cities[4][6];
+
+Potion rocket;
+Potion snow;
+Potion ufo;
+Potion inf;
+
+int rocketVisible , rocketOn;
+int snowVisible , snowOn;
+int ufoOn , ufoVisible;
+int infOn , infVisible;
 
 Coordination begin , dest , begin2 , dest2;
 Coordination mouse , soldier[200] , soldier2[200];
@@ -73,7 +92,12 @@ int gameEventHandling( SDL_Renderer *rend );
 int initializingCities();
 void printMap( SDL_Renderer* rend , int n );
 void sendingSoldiers( SDL_Renderer *rend );
+void rocketInit();
+void snowInit();
+void ufoInit();
+void infInit();
 void solNumIncreasing();
+void AIsolNumIncreasing();
 int checkTheEnd();
 void saveTheGame();
 void updateScores();

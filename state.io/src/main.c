@@ -431,6 +431,19 @@ if( scoreboard ) {
 	}
 
 
+	SDL_DestroyTexture( leader1Texture );
+	SDL_DestroyTexture( leaderImgTexture );
+	SDL_DestroyTexture( leaderTexture );
+	for( int u = 0; u < 4; u++ ) {
+		SDL_DestroyTexture( topTexture[u] );
+		SDL_FreeSurface( topSurface[u] );
+		SDL_DestroyTexture( topSTexture[u] );
+		SDL_FreeSurface( topSSurface[u] );
+	}
+	SDL_FreeSurface( leaderSurface );
+
+
+
 }
 
 
@@ -474,19 +487,30 @@ if( scoreboard ) {
 	SDL_Rect quitRect; quitRect.x = 665; quitRect.y = 370;
 	SDL_QueryTexture( quitTexture , NULL , NULL , &quitRect.w , &quitRect.h );
 
+	// Potions
+	SDL_Texture *rocketTexture = IMG_LoadTexture( myRenderer , "images/rocket.png");
+	SDL_Rect rocketRect;
+
+	SDL_Texture *snowTexture = IMG_LoadTexture( myRenderer , "images/snow.png");
+	SDL_Rect snowRect;
+
+	SDL_Texture *ufoTexture = IMG_LoadTexture( myRenderer , "images/ufo.png");
+	SDL_Rect ufoRect;
+
+	SDL_Texture *infTexture = IMG_LoadTexture( myRenderer , "images/inf.png");
+	SDL_Rect infRect;
 
 
 
 	// game loop
 	while( 1 ) {
-
-		
-		
+	
 		SDL_SetRenderDrawColor( myRenderer , 0xff , 0xff , 0xff , 0xff );
 		SDL_RenderClear( myRenderer );
 
 		SDL_RenderCopy( myRenderer , mapBackImgTexture , NULL , NULL );
 		printMap( myRenderer , n );
+
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
 				sprintf( solNumStr , "%d" , cities[i][j].soldiers_num );
@@ -498,6 +522,7 @@ if( scoreboard ) {
 				SDL_RenderCopy( myRenderer , solNumTexture[i][j] , NULL , &textRect[i][j] );
 			}
 		}
+
 
 		// AI handling
 		if( AIisSendingSoldiers && !end ) {
@@ -529,10 +554,16 @@ if( scoreboard ) {
 			sendingSoldiers( myRenderer );
 		
 
-		if( frame % 60 == 0 ) {
+		if( frame % INCREASE_RATE == 0 ) {
 			if( !end ) {
 				end = checkTheEnd();
 				solNumIncreasing();
+			}
+		}
+
+		if( frame % AI_INCREASE_RATE == 0 ) {
+			if( !end ) {
+				AIsolNumIncreasing();
 			}
 		}
 
@@ -559,6 +590,99 @@ if( scoreboard ) {
 
 		else if( isHoverQuit )
 			roundedBoxRGBA( myRenderer , 600 , 350 , 800 , 440 , 10 , WHITE.r , WHITE.g , WHITE.b , 40 );
+
+		
+		// potion
+		if( rocketVisible && !end )
+			SDL_RenderCopy( myRenderer , rocketTexture , NULL , &rocketRect );
+
+		if( rocket.flag == 1 && !end ) {
+			roundedBoxRGBA ( myRenderer , 20 , 10 , navarx , 30 , 3 , RED.r , RED.g , RED.b , 255 );
+			if(navarx > 28) navarx -= 0.4;
+			else {
+				rocketOn = 0;
+				MY_VEL = 3;
+				rocket.flag = 0;
+			}
+		}
+
+		if( rocket.flag == 2 && !end ) {
+			roundedBoxRGBA ( myRenderer , navarai , 10 , 980 , 30 , 3 , YELLOW.r , YELLOW.g , YELLOW.b , 255 );
+			if(navarai < 972) navarai += 0.4;
+			else {
+				rocketOn = 0;
+				AI_VEL = 3;
+				rocket.flag = 0;
+			}
+		}
+
+		if( snowVisible && !end )
+			SDL_RenderCopy( myRenderer , snowTexture , NULL , &snowRect );
+
+		if( snow.flag == 1 && !end ) {
+			roundedBoxRGBA ( myRenderer , 20 , 10 , navarx , 30 , 3 , RED.r , RED.g , RED.b , 255 );
+			if(navarx > 28) navarx -= 0.4;
+			else {
+				snowOn = 0;
+				snow.flag = 0;
+				AI_VEL = 3;
+			}
+		}
+
+		if( snow.flag == 2 && !end ) {
+			roundedBoxRGBA ( myRenderer , navarai , 10 , 980 , 30 , 3 , YELLOW.r , YELLOW.g , YELLOW.b , 255 );
+			if(navarai < 972) navarai += 0.4;
+			else {
+				snowOn = 0;
+				MY_VEL = 3;
+				snow.flag = 0;
+			}
+		}
+
+		if( ufoVisible && !end )
+			SDL_RenderCopy( myRenderer , ufoTexture , NULL , &ufoRect );
+
+		if( ufo.flag == 1 && !end ) {
+			roundedBoxRGBA ( myRenderer , 20 , 10 , navarx , 30 , 3 , RED.r , RED.g , RED.b , 255 );
+			if(navarx > 28) navarx -= 0.4;
+			else {
+				ufoOn = 0;
+				ufo.flag = 0;
+				INCREASE_RATE = 60;
+			}
+		}
+
+		if( ufo.flag == 2 && !end ) {
+			roundedBoxRGBA ( myRenderer , navarai , 10 , 980 , 30 , 3 , YELLOW.r , YELLOW.g , YELLOW.b , 255 );
+			if(navarai < 972) navarai += 0.4;
+			else {
+				ufoOn = 0;
+				ufo.flag = 0;
+				AI_INCREASE_RATE = 60;
+			}
+		}
+
+		if( infVisible && !end )
+			SDL_RenderCopy( myRenderer , infTexture , NULL , &infRect );
+
+		if( inf.flag == 1 && !end ) {
+			roundedBoxRGBA ( myRenderer , 20 , 10 , navarx , 30 , 3 , RED.r , RED.g , RED.b , 255 );
+			if(navarx > 28) navarx -= 0.4;
+			else {
+				infOn = 0;
+				inf.flag = 0;
+			}
+		}
+
+		if( inf.flag == 2 && !end ) {
+			roundedBoxRGBA ( myRenderer , navarai , 10 , 980 , 30 , 3 , YELLOW.r , YELLOW.g , YELLOW.b , 255 );
+			if(navarai < 972) navarai += 0.4;
+			else {
+				infOn = 0;
+				inf.flag = 0;
+			}
+		}
+
 		
 		SDL_RenderPresent( myRenderer );
 		SDL_Delay( 1000 / FPS );
@@ -567,13 +691,63 @@ if( scoreboard ) {
 		int counter = 0;
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < n; j++) {
-				SDL_DestroyTexture( solNumTexture[i][j] );
 				SDL_DestroyTexture( planetsTexture[counter] );
-				SDL_FreeSurface( solNumSurface[i][j] );
 				counter++;
 			}
 		}
 
+
+		if( frame % 15 == 1 ) {
+			for(int i = 0; i < 3; i++) {
+				for(int j = 0; j < n; j++) {
+					SDL_DestroyTexture( solNumTexture[i][j] );
+					SDL_FreeSurface( solNumSurface[i][j] );
+				}
+			}
+		}
+
+		// potions
+		if( frame % 4000 == 1000 ) {
+			rocketVisible = 1;
+			rocketInit();
+			rocketRect.x = rocket.x - 20; rocketRect.y = rocket.y - 20; rocketRect.w = 40; rocketRect.h = 40;
+		}
+
+		if( frame % 4000 == 1900 ) {
+			snowVisible = 1;
+			snowInit();
+			snowRect.x = snow.x - 20; snowRect.y = snow.y - 20; snowRect.w = 40; snowRect.h = 40;
+		}
+
+		if( frame % 4000 == 2800 ) {
+			ufoVisible = 1;
+			ufoInit();
+			ufoRect.x = ufo.x - 20; ufoRect.y = ufo.y - 20; ufoRect.w = 40; ufoRect.h = 40;
+		}
+
+		if( frame % 4000 == 100 ) {
+			infVisible = 1;
+			infInit();
+			infRect.x = inf.x - 30; infRect.y = inf.y - 15; infRect.w = 60; infRect.h = 30;
+		}
+
+		
+
+		if( frame % 4000 == 1400 ) 
+			rocketVisible = 0;
+		
+		if( frame % 4000 == 2400 ) 
+			snowVisible = 0;
+
+		if( frame % 4000 == 3400 ) 
+			ufoVisible = 0;
+
+		if( frame % 4000 == 500 ) 
+			infVisible = 0;
+		
+
+
+		
 		frame++;
 
 		if(frame % 10000 == 0) 
@@ -586,6 +760,13 @@ if( scoreboard ) {
 	SDL_DestroyRenderer( myRenderer );
 
     SDL_DestroyTexture( mapBackImgTexture );
+
+	TTF_CloseFont( funtasia100 );
+	TTF_CloseFont( funtasia20 );
+	TTF_CloseFont( funtasia40 );
+	TTF_CloseFont( funtasia50 );
+	TTF_CloseFont( funtasia70 );
+	TTF_CloseFont( funtasia40 );
 	
 	SDL_Quit();
 	IMG_Quit();

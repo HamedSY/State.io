@@ -162,6 +162,8 @@ void globalsInit() {
 	COLOR_SOLDIERS_MAX_NUM = 60;
 	ORDINARY_SOLDIERS_MAX_NUM = 10;
 	AI_ATTACKING_FREQUENCY = 100;
+	MY_VEL = 3; AI_VEL = 3;
+	INCREASE_RATE = 60; AI_INCREASE_RATE = 60;
 
 	BLACK = (SDL_Color){ 0 , 0 , 0 , 255 };
 	WHITE = (SDL_Color){ 255 , 255 , 255 , 255 };
@@ -181,7 +183,13 @@ void globalsInit() {
 	diff = 0 ; gal = 0; end = 0; loading = 0; update = 0; scoreboard = 0;
 	hitcounter = 0 ; AIhitcounter = 0; inputLoc = 0;
 	frame = 1;
-	velocity = 3;
+	navarx = 250; navarai = 750;
+	// velocity = MY_VEL;
+	rocketVisible = 0; rocketOn = 0;
+	snowVisible = 0; snowOn = 0;
+	ufoOn = 0; ufoVisible = 0;
+	infOn = 0; infVisible = 0;
+
 
 	ringedPlanets[0] = 1;   ringlessPlanets[0] = 2;
 	ringedPlanets[1] = 3;   ringlessPlanets[1] = 4;

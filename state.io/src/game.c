@@ -248,8 +248,47 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			}
 		
 			
-			soldier[k].x += velocity * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
-			soldier[k].y += velocity * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+			soldier[k].x += MY_VEL * (dest.x - begin.x) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+			soldier[k].y += MY_VEL * (dest.y - begin.y) / ( sqrt ( ( (dest.x - begin.x) * (dest.x - begin.x) ) + ( (dest.y - begin.y) * (dest.y - begin.y) ) ) );
+
+			// potion
+			if( snow.flag == 2 ) 
+            	MY_VEL = 0;
+
+
+			if( abs( rocket.x - soldier[k].x ) < SOLDIER_R + 12 && abs( rocket.y - soldier[k].y ) < SOLDIER_R + 12 && rocketVisible
+			&& rocket.flag != 1 ) {
+				rocketVisible = 0;
+				rocketOn = 1;
+				rocket.flag = 1;
+				MY_VEL = 6;
+				navarx = 250;
+			}
+
+			else if( abs( snow.x - soldier[k].x ) < SOLDIER_R + 12 && abs( snow.y - soldier[k].y ) < SOLDIER_R + 12 && snowVisible
+			&& snow.flag != 1 ) {
+				snowVisible = 0;
+				snowOn = 1;
+				snow.flag = 1;
+				navarx = 250;
+			}
+
+			else if( abs( ufo.x - soldier[k].x ) < SOLDIER_R + 12 && abs( ufo.y - soldier[k].y ) < SOLDIER_R + 12 && ufoVisible
+			&& ufo.flag != 1 ) {
+				ufoVisible = 0;
+				ufoOn = 1;
+				ufo.flag = 1;
+				navarx = 250;
+				INCREASE_RATE = 15;
+			}
+
+			else if( abs( inf.x - soldier[k].x ) < SOLDIER_R + 12 && abs( inf.y - soldier[k].y ) < SOLDIER_R + 12 && infVisible
+			&& inf.flag != 1 ) {
+				infVisible = 0;
+				infOn = 1;
+				inf.flag = 1;
+				navarx = 250;
+			}
 			
 			
 			// hit
@@ -292,18 +331,71 @@ void sendingSoldiers( SDL_Renderer *rend ) {
 			if( ( abs( soldier[k].x - soldier[k + 1].x ) <= 10 ) && ( abs( soldier[k].y - soldier[k + 1].y ) <= 10 ) ) {
 				break;
 			}
-			else velocity = 3;
 
 
 		}
 	}
 }
 
+
+void rocketInit() {
+	int tmpi1 = rand() % 3 , tmpj1 = rand() % n , tmpi2 , tmpj2;
+	if( tmpi1 != 2 ) tmpi2 = tmpi1 + 1;
+	else tmpi2 = tmpi1 - 1;
+	tmpj2 = tmpj1;
+	
+	rocket.x = ( ( cities[tmpi1][tmpj1].x1 + cities[tmpi1][tmpj1].x2 ) / 2 + ( cities[tmpi2][tmpj2].x1 + cities[tmpi2][tmpj2].x2 ) / 2 ) / 2;
+	rocket.y = ( ( cities[tmpi1][tmpj1].y1 + cities[tmpi1][tmpj1].y2 ) / 2 + ( cities[tmpi2][tmpj2].y1 + cities[tmpi2][tmpj2].y2 ) / 2 ) / 2;
+}
+
+void snowInit() {
+	int tmpi1 = rand() % 3 , tmpj1 = rand() % n , tmpi2 , tmpj2;
+	if( tmpi1 != 2 ) tmpi2 = tmpi1 + 1;
+	else tmpi2 = tmpi1 - 1;
+	tmpj2 = tmpj1;
+	
+	snow.x = ( ( cities[tmpi1][tmpj1].x1 + cities[tmpi1][tmpj1].x2 ) / 2 + ( cities[tmpi2][tmpj2].x1 + cities[tmpi2][tmpj2].x2 ) / 2 ) / 2;
+	snow.y = ( ( cities[tmpi1][tmpj1].y1 + cities[tmpi1][tmpj1].y2 ) / 2 + ( cities[tmpi2][tmpj2].y1 + cities[tmpi2][tmpj2].y2 ) / 2 ) / 2;
+}
+
+void ufoInit() {
+	int tmpi1 = rand() % 3 , tmpj1 = rand() % n , tmpi2 , tmpj2;
+	if( tmpi1 != 2 ) tmpi2 = tmpi1 + 1;
+	else tmpi2 = tmpi1 - 1;
+	tmpj2 = tmpj1;
+	
+	ufo.x = ( ( cities[tmpi1][tmpj1].x1 + cities[tmpi1][tmpj1].x2 ) / 2 + ( cities[tmpi2][tmpj2].x1 + cities[tmpi2][tmpj2].x2 ) / 2 ) / 2;
+	ufo.y = ( ( cities[tmpi1][tmpj1].y1 + cities[tmpi1][tmpj1].y2 ) / 2 + ( cities[tmpi2][tmpj2].y1 + cities[tmpi2][tmpj2].y2 ) / 2 ) / 2;
+}
+
+void infInit() {
+	int tmpi1 = rand() % 3 , tmpj1 = rand() % n , tmpi2 , tmpj2;
+	if( tmpi1 != 2 ) tmpi2 = tmpi1 + 1;
+	else tmpi2 = tmpi1 - 1;
+	tmpj2 = tmpj1;
+	
+	inf.x = ( ( cities[tmpi1][tmpj1].x1 + cities[tmpi1][tmpj1].x2 ) / 2 + ( cities[tmpi2][tmpj2].x1 + cities[tmpi2][tmpj2].x2 ) / 2 ) / 2;
+	inf.y = ( ( cities[tmpi1][tmpj1].y1 + cities[tmpi1][tmpj1].y2 ) / 2 + ( cities[tmpi2][tmpj2].y1 + cities[tmpi2][tmpj2].y2 ) / 2 ) / 2;
+}
+
+
 void solNumIncreasing() {
 	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < n; j++) {
-			if(cities[i][j].flag) {
-				if(cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM ) {
+			if(cities[i][j].flag == 1 ) {
+				if( inf.flag == 1 || cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM ) {
+					cities[i][j].soldiers_num ++;
+				}
+			}
+		}
+	}
+}
+
+void AIsolNumIncreasing() {
+	for(int i = 0; i < 3; i++) {
+		for(int j = 0; j < n; j++) {
+			if(cities[i][j].flag == 2) {
+				if( inf.flag == 2 || cities[i][j].soldiers_num < COLOR_SOLDIERS_MAX_NUM ) {
 					cities[i][j].soldiers_num ++;
 				}
 			}
@@ -397,7 +489,7 @@ int initializingCities() {
 	for(int i = 0; i < 3; i++) {
 		cities[i][0].x1 = 40 + (rand() % 30);
 		if(i != 0) cities[i][0].y1 = (rand() % 20) + 15 + cities[i - 1][0].y2;
-		else cities[i][0].y1 = (rand() % 20) + 15;
+		else cities[i][0].y1 = (rand() % 10) + 50;
 
 		for(int j = 0; j < n; j++) {
 			cities[i][j].x2 = cities[i][j].x1 + 150;
@@ -405,7 +497,7 @@ int initializingCities() {
 
 			cities[i][j + 1].x1 = cities[i][j].x2 + (rand() % 20) + 270 - (n * 50);
 			if(i != 0) cities[i][j + 1].y1 = cities[i - 1][j + 1].y2 + (rand() % 20) + 15;
-			else cities[i][j + 1].y1 = (rand() % 20) + 15;
+			else cities[i][j + 1].y1 = (rand() % 10) + 50;
 
 			cities[i][j].soldiers_num = 10;
 			cities[i][j].flag = 0;
